@@ -18,6 +18,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* CatPointTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CatPointTests.m */; };
 		7D130571E5B61AFA06B8244D /* libPods-CatPoint-CatPointTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9865EFBE6D42C1372FBF01FC /* libPods-CatPoint-CatPointTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		976A8ED1252F5F28003BBA63 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A8ED0252F5F28003BBA63 /* File.swift */; };
 		DCF09883249909E7F0C6CE8D /* libPods-CatPoint-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B29AADCA7C92FA239159F86 /* libPods-CatPoint-tvOS.a */; };
 		EB0108ACB506CF674DE2937C /* libPods-CatPoint-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F90B9425CFF93DC3EA877DB9 /* libPods-CatPoint-tvOSTests.a */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,8 @@
 		405FC8982768667523D1CC7F /* Pods-CatPoint-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CatPoint-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-CatPoint-tvOSTests/Pods-CatPoint-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		5B29AADCA7C92FA239159F86 /* libPods-CatPoint-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CatPoint-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = CatPoint/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		976A8ECF252F5F27003BBA63 /* CatPoint-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CatPoint-Bridging-Header.h"; sourceTree = "<group>"; };
+		976A8ED0252F5F28003BBA63 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		9865EFBE6D42C1372FBF01FC /* libPods-CatPoint-CatPointTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CatPoint-CatPointTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B017E5A99F6ED265541161C /* Pods-CatPoint-CatPointTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CatPoint-CatPointTests.release.xcconfig"; path = "Target Support Files/Pods-CatPoint-CatPointTests/Pods-CatPoint-CatPointTests.release.xcconfig"; sourceTree = "<group>"; };
 		A81837EA31A81F1D401DC26E /* libPods-CatPoint.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CatPoint.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,7 +151,6 @@
 				C4464F5FF1809502D42DCC1C /* Pods-CatPoint-tvOSTests.debug.xcconfig */,
 				405FC8982768667523D1CC7F /* Pods-CatPoint-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -175,12 +177,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				976A8ED0252F5F28003BBA63 /* File.swift */,
 				13B07FAE1A68108700A75B9A /* CatPoint */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* CatPointTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				27CDA533D69A9A3D98CDFAAE /* Pods */,
+				976A8ECF252F5F27003BBA63 /* CatPoint-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -294,7 +298,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1200;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -486,10 +490,12 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-CatPoint-CatPointTests/Pods-CatPoint-CatPointTests-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -504,10 +510,12 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-CatPoint/Pods-CatPoint-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -569,6 +577,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				976A8ED1252F5F28003BBA63 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -610,6 +619,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2A0863D5BD205DB5B571F114 /* Pods-CatPoint-CatPointTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -633,6 +643,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9B017E5A99F6ED265541161C /* Pods-CatPoint-CatPointTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = CatPointTests/Info.plist;
@@ -666,6 +677,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = CatPoint;
+				SWIFT_OBJC_BRIDGING_HEADER = "CatPoint-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -688,6 +700,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = CatPoint;
+				SWIFT_OBJC_BRIDGING_HEADER = "CatPoint-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

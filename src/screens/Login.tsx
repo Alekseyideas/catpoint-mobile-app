@@ -1,10 +1,40 @@
 import React from 'react';
+import {
+  LoginManager,
+  GraphRequest,
+  GraphRequestManager,
+  AccessToken,
+} from 'react-native-fbsdk';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Logo} from '../components/Logo';
 import {CpText, FaceBookBtn, InstagramBtn} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
 
 export const Login: React.FC = () => {
+  const responseInfoCallback = (
+    error: object | undefined,
+    result: {name?: string} | undefined,
+  ): any => {
+    if (error) {
+      console.log('Error fetching data: ', error);
+    } else {
+      console.log(result);
+    }
+  };
+
+  // Create a graph request asking for user information with a callback to handle the response.
+  const infoRequest = new GraphRequest(
+    '/me',
+    {
+      parameters: {
+        fields: {
+          string: 'email,name,first_name,middle_name,last_name,picture{url}',
+        },
+      },
+    },
+    responseInfoCallback,
+  );
+
   return (
     <MainWrapper>
       <View style={styles.wrapper}>
@@ -12,9 +42,25 @@ export const Login: React.FC = () => {
         <View style={styles.btnsWrapper}>
           <CpText newStyles={styles.titleBlock}>почати збирати поінти</CpText>
           <View style={{marginBottom: 20}}>
-            <InstagramBtn onPress={() => console.log(2)} />
+            <InstagramBtn onPress={LoginManager.logOut} />
           </View>
-          <FaceBookBtn onPress={() => console.log(1)} />
+          <FaceBookBtn
+            onPress={async (): Promise<boolean> => {
+              try {
+                const result = await LoginManager.logInWithPermissions([
+                  'public_profile',
+                ]);
+                if (result.isCancelled) {
+                  console.log('Login cancelled');
+                } else {
+                  new GraphRequestManager().addRequest(infoRequest).start();
+                }
+              } catch (e) {
+                console.log('Login fail with error: ', e);
+              }
+              return true;
+            }}
+          />
         </View>
         <TouchableOpacity>
           <CpText newStyles={styles.textAsComp}>увійти, як компанія</CpText>
