@@ -29,6 +29,8 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "@typescript-eslint/no-use-before-define": "off",
+    "react/prop-types": "off",
     "no-loop-func": "off",
     "@typescript-eslint/no-loop-func": "off",
     "@typescript-eslint/no-redeclare": "off",
