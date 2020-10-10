@@ -1,4 +1,5 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
 import {NavigationComponentProps} from 'react-native-navigation';
 import {View, StyleSheet, Image} from 'react-native';
 import {CpButton, CpText} from '../components/ui';
@@ -6,11 +7,16 @@ import {MainWrapper} from '../hoc/MainWrapper';
 import Logo from '../assets/images/logo.png';
 import {ROUTES} from '../utils/const';
 import {goTo} from '../utils/navigation';
+import {ApplicationState} from '../store/applicationState';
 
 interface WelocomeProps extends NavigationComponentProps {
   num?: string;
 }
 export const Welcome: React.FC<WelocomeProps> = (props) => {
+  const {User} = useSelector((store: ApplicationState) => store);
+  React.useEffect(() => {
+    console.log('useEffect', User);
+  }, []);
   return (
     <MainWrapper>
       <View style={styles.container}>

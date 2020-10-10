@@ -12,3 +12,23 @@ export const goTo = (data: {
     },
   });
 };
+
+export const goToRoot = (name: string) =>
+  Navigation.setRoot({
+    root: {
+      stack: {
+        options: {
+          topBar: {
+            visible: false,
+          },
+        },
+        children: [
+          {
+            component: {
+              name,
+            },
+          },
+        ],
+      },
+    },
+  });
