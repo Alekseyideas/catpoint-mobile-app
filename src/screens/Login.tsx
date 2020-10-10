@@ -3,7 +3,6 @@ import {
   LoginManager,
   GraphRequest,
   GraphRequestManager,
-  AccessToken,
 } from 'react-native-fbsdk';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Logo} from '../components/Logo';
@@ -22,7 +21,6 @@ export const Login: React.FC = () => {
     }
   };
 
-  // Create a graph request asking for user information with a callback to handle the response.
   const infoRequest = new GraphRequest(
     '/me',
     {

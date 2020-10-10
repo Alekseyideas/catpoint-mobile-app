@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import store from '../store';
 
 export const MainWrapper: React.FC = ({children}) => {
   return (
