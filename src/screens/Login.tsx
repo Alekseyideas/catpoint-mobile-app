@@ -1,23 +1,70 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
+import {useDispatch} from 'react-redux';
 import {
   LoginManager,
   GraphRequest,
   GraphRequestManager,
 } from 'react-native-fbsdk';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import {NavigationComponentProps} from 'react-native-navigation';
+import {View, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import {Logo} from '../components/Logo';
 import {CpText, FaceBookBtn, InstagramBtn} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
+import {goTo} from '../utils/navigation';
+import {ROUTES} from '../utils/const';
+import {TEXT} from '../utils/text';
+import {setUser} from '../store/User/actions';
 
-export const Login: React.FC = () => {
-  const responseInfoCallback = (
+interface LoginProps extends NavigationComponentProps {
+  num?: string;
+}
+export const Login: React.FC<LoginProps> = ({componentId}) => {
+  const dispatch = useDispatch();
+  const responseInfoCallback = async (
     error: object | undefined,
-    result: {name?: string} | undefined,
-  ): any => {
+    result:
+      | {
+          email?: string;
+          first_name?: string;
+          last_name?: string;
+          picture?: {
+            data: {
+              url: string;
+            };
+          };
+          id?: string;
+        }
+      | undefined,
+  ) => {
     if (error) {
       console.log('Error fetching data: ', error);
+      Alert.alert(TEXT.titleError, TEXT.tryAgainLater);
     } else {
       console.log(result);
+      if (result) {
+        const {
+          id,
+          picture,
+          email,
+          last_name: lastName,
+          first_name: firstName,
+        } = result;
+        dispatch(
+          setUser({
+            id: null,
+            fbId: id || '',
+            image: picture?.data.url || '',
+            lastName: lastName || '',
+            firstName: firstName || '',
+            inId: '',
+            email: email || '',
+          }),
+        );
+        await AsyncStorage.setItem('email', email || '');
+        goTo({componentId, name: ROUTES.home});
+      }
     }
   };
 
@@ -47,6 +94,7 @@ export const Login: React.FC = () => {
               try {
                 const result = await LoginManager.logInWithPermissions([
                   'public_profile',
+                  'email',
                 ]);
                 if (result.isCancelled) {
                   console.log('Login cancelled');
@@ -60,7 +108,8 @@ export const Login: React.FC = () => {
             }}
           />
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => goTo({componentId, name: ROUTES.compLogin})}>
           <CpText newStyles={styles.textAsComp}>увійти, як компанія</CpText>
         </TouchableOpacity>
       </View>
@@ -78,6 +127,7 @@ const styles = StyleSheet.create({
 
   textAsComp: {
     textAlign: 'center',
+    color: 'white',
   },
   logo: {
     width: 105,

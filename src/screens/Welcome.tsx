@@ -1,5 +1,4 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
 import {NavigationComponentProps} from 'react-native-navigation';
 import {View, StyleSheet, Image} from 'react-native';
 import {CpButton, CpText} from '../components/ui';
@@ -7,26 +6,21 @@ import {MainWrapper} from '../hoc/MainWrapper';
 import Logo from '../assets/images/logo.png';
 import {ROUTES} from '../utils/const';
 import {goTo} from '../utils/navigation';
-import {ApplicationState} from '../store/applicationState';
 
 interface WelocomeProps extends NavigationComponentProps {
   num?: string;
 }
 export const Welcome: React.FC<WelocomeProps> = (props) => {
-  const {User} = useSelector((store: ApplicationState) => store);
-  React.useEffect(() => {
-    console.log('useEffect', User);
-  }, []);
   return (
     <MainWrapper>
       <View style={styles.container}>
         <Image source={Logo} style={styles.image} />
         <View style={styles.circle} />
-        <CpText>пий каву</CpText>
+        <CpText newStyles={{color: '#fff'}}>пий каву</CpText>
         <View style={styles.circle} />
-        <CpText>збирай поінти</CpText>
+        <CpText newStyles={{color: '#fff'}}>збирай поінти</CpText>
         <View style={styles.circle} />
-        <CpText>отримуй плюшки</CpText>
+        <CpText newStyles={{color: '#fff'}}>отримуй плюшки</CpText>
         <View style={styles.btnWrapper}>
           <CpButton
             title="ДАЛI"

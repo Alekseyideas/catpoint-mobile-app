@@ -6,3 +6,6 @@ export const getUserS = (payload: TUser) =>
   action(ActionTypes.GET_USER_S, payload);
 export const getUserE = (message: string) =>
   action(ActionTypes.GET_USER_E, message);
+
+export const setUser = (payload: TUser) =>
+  action(ActionTypes.SET_USER, payload);

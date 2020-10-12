@@ -10,7 +10,7 @@ export const CpText: React.FC<CpTextProps> = ({children, newStyles}) => {
 
 const styles = StyleSheet.create({
   cptext: {
-    color: 'white',
+    color: 'rgba(0, 0, 0, 0.6)',
     fontSize: 16,
   },
 });
