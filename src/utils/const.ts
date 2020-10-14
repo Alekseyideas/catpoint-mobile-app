@@ -4,7 +4,9 @@ export const ROUTES = {
   welcome: createRouteName('Welcome'),
   init: createRouteName('Init'),
   home: createRouteName('Home'),
+  companyHome: createRouteName('CompanyHome'),
   compLogin: createRouteName('CompLogin'),
+  registerCompany: createRouteName('RegisterCompany'),
 };
 
 export const COLORS = {

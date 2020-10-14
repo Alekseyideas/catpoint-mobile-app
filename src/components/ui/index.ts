@@ -1,3 +1,3 @@
-export {CpText} from './CpText';
-export {CpButton, FaceBookBtn, InstagramBtn} from './CpButtons';
+export {CpText, CpUnderlineTitle} from './CpText';
+export {CpButton, CpButtonGreen, FaceBookBtn, InstagramBtn} from './CpButtons';
 export {CpInput} from './CpInput';

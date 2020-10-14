@@ -16,6 +16,11 @@ Navigation.registerComponent(ROUTES.compLogin, () => (props) => (
     <Screen.CompLogin {...props} />
   </WithRedux>
 ));
+Navigation.registerComponent(ROUTES.registerCompany, () => (props) => (
+  <WithRedux>
+    <Screen.RegisterCompany {...props} />
+  </WithRedux>
+));
 
 Navigation.registerComponent(ROUTES.login, () => (props) => (
   <WithRedux>
@@ -41,6 +46,12 @@ Navigation.registerComponent(ROUTES.home, () => (props) => (
   </WithRedux>
 ));
 
+Navigation.registerComponent(ROUTES.companyHome, () => (props) => (
+  <WithRedux>
+    <Screen.CompanyHome {...props} />
+  </WithRedux>
+));
+
 Navigation.events().registerAppLaunchedListener(() =>
-  goToRoot(ROUTES.compLogin),
+  goToRoot(ROUTES.companyHome),
 );
