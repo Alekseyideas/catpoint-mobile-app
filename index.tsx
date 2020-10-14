@@ -5,10 +5,22 @@ import {Navigation} from 'react-native-navigation';
 import * as Screen from './src/screens';
 import {ROUTES} from './src/utils/const';
 import store from './src/store';
+import {goToRoot} from './src/utils/navigation';
 
 const WithRedux: React.FC = ({children}) => (
   <Provider store={store}>{children}</Provider>
 );
+
+Navigation.registerComponent(ROUTES.compLogin, () => (props) => (
+  <WithRedux>
+    <Screen.CompLogin {...props} />
+  </WithRedux>
+));
+Navigation.registerComponent(ROUTES.registerCompany, () => (props) => (
+  <WithRedux>
+    <Screen.RegisterCompany {...props} />
+  </WithRedux>
+));
 
 Navigation.registerComponent(ROUTES.login, () => (props) => (
   <WithRedux>
@@ -34,50 +46,12 @@ Navigation.registerComponent(ROUTES.home, () => (props) => (
   </WithRedux>
 ));
 
-Navigation.events().registerAppLaunchedListener(() => {
-  let isLoggedIn = true;
+Navigation.registerComponent(ROUTES.companyHome, () => (props) => (
+  <WithRedux>
+    <Screen.CompanyHome {...props} />
+  </WithRedux>
+));
 
-  setTimeout(() => {
-    isLoggedIn = true;
-  }, 2000);
-
-  if (isLoggedIn) {
-    Navigation.setRoot({
-      root: {
-        stack: {
-          options: {
-            topBar: {
-              visible: false,
-            },
-          },
-          children: [
-            {
-              component: {
-                name: ROUTES.home,
-              },
-            },
-          ],
-        },
-      },
-    });
-  } else {
-    Navigation.setRoot({
-      root: {
-        stack: {
-          options: {
-            topBar: {
-              visible: false,
-            },
-          },
-          children: [
-            {
-              component: {
-                name: ROUTES.init,
-              },
-            },
-          ],
-        },
-      },
-    });
-  }
-});
+Navigation.events().registerAppLaunchedListener(() =>
+  goToRoot(ROUTES.companyHome),
+);

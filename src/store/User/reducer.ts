@@ -12,7 +12,8 @@ export const initialState: TUserState = {
 type UserActionTypes =
   | typeof Actions.getUserS
   | typeof Actions.getUserE
-  | typeof Actions.getUserR;
+  | typeof Actions.getUserR
+  | typeof Actions.setUser;
 
 const userReducer = (
   state = initialState,
@@ -21,6 +22,8 @@ const userReducer = (
   switch (action.type) {
     case ActionTypes.GET_USER_R:
       return {...state, loading: true, errors: undefined};
+    case ActionTypes.SET_USER:
+      return {...state, data: action.payload};
     case ActionTypes.GET_USER_S:
       return {
         ...state,

@@ -28,6 +28,18 @@ export const CpButton: React.FC<CpButtonProps> = ({
     </TouchableOpacity>
   );
 };
+export const CpButtonGreen: React.FC<CpButtonProps> = ({
+  title,
+  onPress,
+  textStyle,
+  btnStyle,
+}) => {
+  return (
+    <TouchableOpacity style={[styles.greenBtn, btnStyle]} onPress={onPress}>
+      <CpText newStyles={[styles.cptextWhite, textStyle]}>{title}</CpText>
+    </TouchableOpacity>
+  );
+};
 
 interface FaceBookBtnProps {
   title?: string;
@@ -72,6 +84,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: btnRadius,
+  },
+  greenBtn: {
+    backgroundColor: 'rgb(51, 154, 0)',
+    height: btnHeight,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: btnRadius,
+    color: '#fff',
+  },
+  cptextWhite: {
+    color: 'white',
   },
   cptext: {
     color: 'black',

@@ -11,7 +11,9 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.12.1",
     "axios": "^0.20.0",
+    "formik": "^2.2.0",
     "react": "16.13.1",
     "react-native": "0.63.3",
     "react-native-fbsdk": "^2.0.0",
