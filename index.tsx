@@ -52,6 +52,4 @@ Navigation.registerComponent(ROUTES.companyHome, () => (props) => (
   </WithRedux>
 ));
 
-Navigation.events().registerAppLaunchedListener(() =>
-  goToRoot(ROUTES.companyHome),
-);
+Navigation.events().registerAppLaunchedListener(() => goToRoot(ROUTES.welcome));

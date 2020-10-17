@@ -1,5 +1,5 @@
-import {TUser} from './User/types';
+import {TUserState} from './User/types';
 
 export interface ApplicationState {
-  User: TUser;
+  User: TUserState;
 }

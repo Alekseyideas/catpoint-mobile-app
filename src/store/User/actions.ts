@@ -1,5 +1,12 @@
 import {action} from 'typesafe-actions';
-import {ActionTypes, TUser} from './types';
+import {ActionTypes, TSendUserData, TUser} from './types';
+
+export const signInR = (payload: TSendUserData) =>
+  action(ActionTypes.SING_IN_R, payload);
+export const signInS = (payload: TUser) =>
+  action(ActionTypes.SING_IN_S, payload);
+export const signInE = (message: string) =>
+  action(ActionTypes.SING_IN_E, message);
 
 export const getUserR = () => action(ActionTypes.GET_USER_R);
 export const getUserS = (payload: TUser) =>
