@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   LoginManager,
   GraphRequest,
@@ -15,13 +15,24 @@ import {MainWrapper} from '../hoc/MainWrapper';
 import {goTo} from '../utils/navigation';
 import {ROUTES} from '../utils/const';
 import {TEXT} from '../utils/text';
-import {setUser} from '../store/User/actions';
+import {setUser, signInR} from '../store/User/actions';
+import {ApplicationState} from '../store/applicationState';
 
 interface LoginProps extends NavigationComponentProps {
   num?: string;
 }
 export const Login: React.FC<LoginProps> = ({componentId}) => {
+  const {User} = useSelector((store: ApplicationState) => store);
   const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    if (User.data) {
+      (async () => {
+        await AsyncStorage.setItem('token', User.data?.token || '');
+        goTo({componentId, name: ROUTES.home});
+      })();
+    }
+  }, [User.data, componentId]);
   const responseInfoCallback = async (
     error: object | undefined,
     result:
@@ -51,19 +62,27 @@ export const Login: React.FC<LoginProps> = ({componentId}) => {
           last_name: lastName,
           first_name: firstName,
         } = result;
+        // dispatch(
+        //   setUser({
+        //     id: null,
+        //     appId: id || '',
+        //     image: picture?.data.url || '',
+        //     lastName: lastName || '',
+        //     firstName: firstName || '',
+        //     email: email || '',
+        //   }),
+        // );
+        // await AsyncStorage.setItem('email', email || '');
         dispatch(
-          setUser({
-            id: null,
-            fbId: id || '',
+          signInR({
+            appId: id || '',
             image: picture?.data.url || '',
             lastName: lastName || '',
             firstName: firstName || '',
-            inId: '',
             email: email || '',
           }),
         );
-        await AsyncStorage.setItem('email', email || '');
-        goTo({componentId, name: ROUTES.home});
+        // goTo({componentId, name: ROUTES.home});
       }
     }
   };

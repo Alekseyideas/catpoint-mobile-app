@@ -1,4 +1,5 @@
 import React from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import {NavigationComponentProps} from 'react-native-navigation';
 import {View, StyleSheet, Image} from 'react-native';
 import {CpButton, CpText} from '../components/ui';
@@ -11,6 +12,12 @@ interface WelocomeProps extends NavigationComponentProps {
   num?: string;
 }
 export const Welcome: React.FC<WelocomeProps> = (props) => {
+  React.useEffect(() => {
+    (async () => {
+      const d = await AsyncStorage.getItem('token');
+      console.log('d', d);
+    })();
+  }, []);
   return (
     <MainWrapper>
       <View style={styles.container}>
