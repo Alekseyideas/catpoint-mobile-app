@@ -25,7 +25,7 @@ export const callApi = async (axData: CallApiIn) => {
     return responce.data;
   } catch (e) {
     console.log('error data', axData);
-    console.log(e.response?.data || e);
+    console.log('e.response', e.response?.data || e);
 
     throw new Error(e.response?.data || e);
   }

@@ -10,6 +10,7 @@ export interface TUser extends TSendUserData {
   id: number | null;
   createAt: number;
   token: string;
+  refreshToken: string;
   updateAt: number;
 }
 

@@ -29,6 +29,10 @@ export const Login: React.FC<LoginProps> = ({componentId}) => {
     if (User.data) {
       (async () => {
         await AsyncStorage.setItem('token', User.data?.token || '');
+        await AsyncStorage.setItem(
+          'refreshToken',
+          User.data?.refreshToken || '',
+        );
         goTo({componentId, name: ROUTES.home});
       })();
     }

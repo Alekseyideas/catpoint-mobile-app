@@ -8,7 +8,10 @@ export const signInS = (payload: TUser) =>
 export const signInE = (message: string) =>
   action(ActionTypes.SING_IN_E, message);
 
-export const getUserR = () => action(ActionTypes.GET_USER_R);
+export const getUserR = (
+  callbackSuccess?: () => void,
+  callbackError?: () => void,
+) => action(ActionTypes.GET_USER_R, {callbackSuccess, callbackError});
 export const getUserS = (payload: TUser) =>
   action(ActionTypes.GET_USER_S, payload);
 export const getUserE = (message: string) =>
