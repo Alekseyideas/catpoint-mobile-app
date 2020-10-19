@@ -1,6 +1,6 @@
 import React from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import {NavigationComponentProps} from 'react-native-navigation';
+import {NavigationComponentProps, Navigation} from 'react-native-navigation';
 import {View, StyleSheet, Image} from 'react-native';
 import {CpButton, CpText} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
@@ -40,6 +40,18 @@ export const Welcome: React.FC<WelocomeProps> = (props) => {
     </MainWrapper>
   );
 };
+
+Navigation.setDefaultOptions({
+  animations: {
+    setRoot: {
+      alpha: {
+        from: 0,
+        to: 1,
+        duration: 500,
+      },
+    },
+  },
+});
 
 const circleSize = 8;
 const styles = StyleSheet.create({
