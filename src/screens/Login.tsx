@@ -33,6 +33,7 @@ export const Login: React.FC<LoginProps> = ({componentId}) => {
           'refreshToken',
           User.data?.refreshToken || '',
         );
+        await AsyncStorage.setItem('userId', `${User.data?.id || ''}`);
         goTo({componentId, name: ROUTES.home});
       })();
     }

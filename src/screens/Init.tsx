@@ -10,15 +10,21 @@ import {callApi} from '../utils/callApi';
 import {getUserR} from '../store/User/actions';
 // import {useFbLogin} from '../hooks/useFbLogin';
 // import {COLORS} from '../utils/const';
-
+// AsyncStorage.clear();
 export const Init: React.FC = () => {
   // const {startReq} = useFbLogin();
   const dispatch = useDispatch();
   const getLocalUser = React.useCallback(async () => {
-    const goToScreen = async (data?: {token: string; refreshToken: string}) => {
+    const goToScreen = async (data?: {
+      token: string;
+      refreshToken: string;
+      id: string;
+    }) => {
       if (data?.token && data?.refreshToken) {
+        console.log(data, 'data.id');
         await AsyncStorage.setItem('token', data.token || '');
         await AsyncStorage.setItem('refreshToken', data.refreshToken || '');
+        await AsyncStorage.setItem('userId', data.id || '');
         dispatch(
           getUserR(
             () => goToRoot(ROUTES.home),
@@ -55,6 +61,8 @@ export const Init: React.FC = () => {
     try {
       const token = await AsyncStorage.getItem('token');
       const refreshToken = await AsyncStorage.getItem('refreshToken');
+      const userId = await AsyncStorage.getItem('userId');
+      console.log('Init:React.FC -> userId', userId);
 
       if (token && refreshToken) {
         const {exp} = jwtDecode(token);
