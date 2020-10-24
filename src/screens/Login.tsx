@@ -15,7 +15,7 @@ import {MainWrapper} from '../hoc/MainWrapper';
 import {goTo} from '../utils/navigation';
 import {ROUTES} from '../utils/const';
 import {TEXT} from '../utils/text';
-import {setUser, signInR} from '../store/User/actions';
+import {signInR} from '../store/User/actions';
 import {ApplicationState} from '../store/applicationState';
 
 interface LoginProps extends NavigationComponentProps {

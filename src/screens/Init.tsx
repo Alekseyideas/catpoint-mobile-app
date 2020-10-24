@@ -60,6 +60,7 @@ export const Init: React.FC = () => {
 
     try {
       const token = await AsyncStorage.getItem('token');
+      console.log('Init:React.FC -> token', token);
       const refreshToken = await AsyncStorage.getItem('refreshToken');
       const userId = await AsyncStorage.getItem('userId');
       console.log('Init:React.FC -> userId', userId);

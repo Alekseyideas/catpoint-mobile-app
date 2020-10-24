@@ -6,6 +6,9 @@ import {CpButton, CpButtonGreen, CpInput, CpText} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
 import {TEXT} from '../utils/text';
 import {ValidateEmail} from '../utils/helpers';
+import {goTo} from '../utils/navigation';
+import {ROUTES} from '../utils/const';
+import {NavigationComponentProps} from 'react-native-navigation';
 
 interface CompLoginProps {
   t?: string;
@@ -14,7 +17,9 @@ interface CompLoginProps {
 const field1 = 'email';
 const field2 = 'pass';
 
-export const CompLogin: React.FC<CompLoginProps> = () => {
+export const CompLogin: React.FC<NavigationComponentProps> = ({
+  componentId,
+}) => {
   return (
     <MainWrapper>
       <View style={stylesComp.wrapper}>
@@ -74,7 +79,7 @@ export const CompLogin: React.FC<CompLoginProps> = () => {
         </View>
         <View style={stylesComp.btnRegWrapper}>
           <CpButton
-            onPress={() => console.log(123)}
+            onPress={() => goTo({componentId, name: ROUTES.registerCompany})}
             title="зареєструватись"
             textStyle={{textTransform: 'uppercase'}}
           />
