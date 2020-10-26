@@ -19,12 +19,15 @@ export const Init: React.FC = () => {
       token: string;
       refreshToken: string;
       id: string;
+      isCompany?: boolean;
     }) => {
       if (data?.token && data?.refreshToken) {
-        console.log(data, 'data.id');
         await AsyncStorage.setItem('token', data.token || '');
         await AsyncStorage.setItem('refreshToken', data.refreshToken || '');
-        await AsyncStorage.setItem('userId', data.id || '');
+        await AsyncStorage.setItem(
+          data?.isCompany ? 'companyId' : 'userId',
+          data.id || '',
+        );
         dispatch(
           getUserR(
             () => goToRoot(ROUTES.home),
@@ -36,7 +39,11 @@ export const Init: React.FC = () => {
       }
     };
 
-    const hasTokenRoute = async (isExpired: boolean, refreshToken: string) => {
+    const hasTokenRoute = async (
+      isExpired: boolean,
+      refreshToken: string,
+      isCompany: boolean,
+    ) => {
       if (isExpired) {
         try {
           const resp = await callApi({
@@ -44,11 +51,14 @@ export const Init: React.FC = () => {
             method: 'POST',
             data: {refreshToken},
           });
-          return goToScreen(resp);
+          return goToScreen({...resp, isCompany});
         } catch (e) {
           return goToRoot(ROUTES.welcome);
         }
       } else {
+        if (isCompany) {
+          return console.log('isCompany', isCompany);
+        }
         return dispatch(
           getUserR(
             () => goToRoot(ROUTES.home),
@@ -63,12 +73,14 @@ export const Init: React.FC = () => {
       console.log('Init:React.FC -> token', token);
       const refreshToken = await AsyncStorage.getItem('refreshToken');
       const userId = await AsyncStorage.getItem('userId');
+      const companyId = await AsyncStorage.getItem('companyId');
       console.log('Init:React.FC -> userId', userId);
+      console.log('Init:React.FC -> companyId', companyId);
 
       if (token && refreshToken) {
         const {exp} = jwtDecode(token);
         const isExpired = Date.now() >= exp * 1000;
-        return hasTokenRoute(isExpired, refreshToken);
+        return hasTokenRoute(isExpired, refreshToken, !!companyId);
       }
       await AsyncStorage.clear();
       return goToRoot(ROUTES.welcome);
