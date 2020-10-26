@@ -1,6 +1,9 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import {Formik} from 'formik';
 import React from 'react';
 import {Alert, ScrollView, StyleSheet, View} from 'react-native';
+import {NavigationComponentProps} from 'react-native-navigation';
+import {useDispatch, useSelector} from 'react-redux';
 import {Logo} from '../components/Logo';
 import {
   CpText,
@@ -10,20 +13,43 @@ import {
   CpUnderlineTitle,
 } from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
+import {ApplicationState} from '../store/applicationState';
+import {signUpCompanyR} from '../store/Company/actions';
+import {ROUTES} from '../utils/const';
 import {ValidateEmail} from '../utils/helpers';
+import {goTo} from '../utils/navigation';
 import {TEXT} from '../utils/text';
 import {stylesComp} from './CompLogin';
 
 // interface RegisterCompanyProps {}
 const companyName = 'companyName';
-const adress = 'adress';
-const name = 'name';
+const address = 'address';
+const firstName = 'name';
 const position = 'position';
 const email = 'email';
 const phone = 'phone';
 const pass = 'pass';
 const pass2 = 'pass2';
-export const RegisterCompany: React.FC = () => {
+
+export const RegisterCompany: React.FC<NavigationComponentProps> = ({
+  componentId,
+}) => {
+  const {Company} = useSelector((store: ApplicationState) => store);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    (async () => {
+      if (Company.data) {
+        await AsyncStorage.setItem('token', Company.data?.token || '');
+        await AsyncStorage.setItem(
+          'refreshToken',
+          Company.data?.refreshToken || '',
+        );
+        await AsyncStorage.setItem('companyId', `${Company.data?.id || ''}`);
+        goTo({componentId, name: ROUTES.companyHome});
+      }
+    })();
+  }, [Company.data, componentId]);
   return (
     <MainWrapper>
       <ScrollView style={{paddingTop: 40, flex: 1}}>
@@ -47,21 +73,21 @@ export const RegisterCompany: React.FC = () => {
             </CpText>
             <Formik
               initialValues={{
-                [companyName]: '',
-                [name]: '',
-                [adress]: '',
-                [position]: '',
-                [email]: '',
-                [phone]: '',
-                [pass]: '',
-                [pass2]: '',
+                [companyName]: 'CatPoint',
+                [firstName]: 'Aleksey Company',
+                [address]: 'Кондратьева, 154/1',
+                [position]: 'Разаработчик',
+                [email]: 'alekseyideas@gmail.com',
+                [phone]: '0666632685',
+                [pass]: '24071989',
+                [pass2]: '24071989',
               }}
               onSubmit={(values) => {
                 if (!values[companyName])
                   return Alert.alert(TEXT.titleError, TEXT.emailIsReq);
-                if (!values[adress])
+                if (!values[address])
                   return Alert.alert(TEXT.titleError, TEXT.passIsReq);
-                if (!values[name])
+                if (!values[firstName])
                   return Alert.alert(TEXT.titleError, TEXT.passIsReq);
                 if (!values[position])
                   return Alert.alert(TEXT.titleError, TEXT.passIsReq);
@@ -75,7 +101,17 @@ export const RegisterCompany: React.FC = () => {
                   return Alert.alert(TEXT.titleError, TEXT.emailIsReq);
                 if (values[pass] !== values[pass2])
                   return Alert.alert(TEXT.titleError, TEXT.emailIsReq);
-
+                dispatch(
+                  signUpCompanyR({
+                    firstName: values[firstName],
+                    name: values[companyName],
+                    position: values[position],
+                    phone: values[phone],
+                    password: values[pass],
+                    email: values[email],
+                    address: values[address],
+                  }),
+                );
                 return console.log('values', values);
               }}>
               {({handleChange, handleBlur, handleSubmit, values}) => (
@@ -90,17 +126,17 @@ export const RegisterCompany: React.FC = () => {
                   </View>
                   <View style={stylesComp.wrapperInput}>
                     <CpInput
-                      onChange={handleChange(adress)}
-                      onBlur={handleBlur(adress)}
-                      value={values[adress]}
+                      onChange={handleChange(address)}
+                      onBlur={handleBlur(address)}
+                      value={values[address]}
                       placeholder="Адреса знаходженя"
                     />
                   </View>
                   <View style={stylesComp.wrapperInput}>
                     <CpInput
-                      onChange={handleChange(name)}
-                      onBlur={handleBlur(name)}
-                      value={values[name]}
+                      onChange={handleChange(firstName)}
+                      onBlur={handleBlur(firstName)}
+                      value={values[firstName]}
                       placeholder="Ім’я"
                     />
                   </View>
