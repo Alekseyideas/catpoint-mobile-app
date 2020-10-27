@@ -10,15 +10,23 @@ export const initialState: TCompanyState = {
 type UserActionTypes =
   | typeof Actions.signUpCompanyR
   | typeof Actions.signUpCompanyS
-  | typeof Actions.signUpCompanyE;
+  | typeof Actions.signUpCompanyE
+  | typeof Actions.getCompanyE
+  | typeof Actions.getCompanyR
+  | typeof Actions.getCompanyS;
 
 const companyReducer = (
   state = initialState,
   action: ReturnType<UserActionTypes>,
 ): TCompanyState => {
   switch (action.type) {
+    case ActionTypes.COMPANY_R:
     case ActionTypes.SIGN_UP_R:
+    case ActionTypes.SIGN_IN_R:
       return {...state, loading: true, errors: undefined};
+
+    case ActionTypes.COMPANY_S:
+    case ActionTypes.SIGN_IN_S:
     case ActionTypes.SIGN_UP_S:
       return {
         ...state,
@@ -26,6 +34,9 @@ const companyReducer = (
         loading: false,
         errors: undefined,
       };
+
+    case ActionTypes.SIGN_IN_E:
+    case ActionTypes.COMPANY_E:
     case ActionTypes.SIGN_UP_E:
       return {...state, loading: false, errors: action.payload};
     default:

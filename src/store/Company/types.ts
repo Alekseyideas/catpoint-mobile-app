@@ -24,11 +24,17 @@ export interface TCompanyState {
 }
 
 export enum ActionTypes {
-  SIGN_UP_R = '@@company/GET_USER_R',
-  SIGN_UP_S = '@@company/GET_USER_S',
-  SIGN_UP_E = '@@company/GET_USER_E',
+  SIGN_UP_R = '@@company/SIGN_UP_R',
+  SIGN_UP_S = '@@company/SIGN_UP_S',
+  SIGN_UP_E = '@@company/SIGN_UP_E',
 
-  SET_USER = '@@user/SET_USER',
+  SIGN_IN_R = '@@company/SIGN_IN_R',
+  SIGN_IN_S = '@@company/SIGN_IN_S',
+  SIGN_IN_E = '@@company/SIGN_IN_E',
 
-  USER_CLEAN_UP = '@@user/USER_CLEAN_UP',
+  COMPANY_R = '@@company/COMPANY_R',
+  COMPANY_S = '@@company/COMPANY_S',
+  COMPANY_E = '@@company/COMPANY_E',
+
+  CLEAN_UP = '@@company/CLEAN_UP',
 }

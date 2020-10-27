@@ -1,5 +1,8 @@
 import React from 'react';
+import {NavigationComponentProps} from 'react-native-navigation';
+import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
+import AsyncStorage from '@react-native-community/async-storage';
 import {Alert, StyleSheet, View} from 'react-native';
 import {Logo} from '../components/Logo';
 import {CpButton, CpButtonGreen, CpInput, CpText} from '../components/ui';
@@ -7,8 +10,10 @@ import {MainWrapper} from '../hoc/MainWrapper';
 import {TEXT} from '../utils/text';
 import {ValidateEmail} from '../utils/helpers';
 import {goTo} from '../utils/navigation';
-import {ROUTES} from '../utils/const';
-import {NavigationComponentProps} from 'react-native-navigation';
+import {LOCAL_STORE, ROUTES} from '../utils/const';
+
+import {ApplicationState} from '../store/applicationState';
+import {signInCompanyR} from '../store/Company/actions';
 
 interface CompLoginProps {
   t?: string;
@@ -20,6 +25,27 @@ const field2 = 'pass';
 export const CompLogin: React.FC<NavigationComponentProps> = ({
   componentId,
 }) => {
+  const {Company} = useSelector((state: ApplicationState) => state);
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    (async () => {
+      if (Company.data) {
+        await AsyncStorage.setItem(
+          LOCAL_STORE.token,
+          Company.data?.token || '',
+        );
+        await AsyncStorage.setItem(
+          LOCAL_STORE.refToken,
+          Company.data?.refreshToken || '',
+        );
+        await AsyncStorage.setItem(
+          LOCAL_STORE.companyId,
+          `${Company.data?.id || ''}`,
+        );
+        goTo({componentId, name: ROUTES.companyHome});
+      }
+    })();
+  }, [Company.data, componentId]);
   return (
     <MainWrapper>
       <View style={stylesComp.wrapper}>
@@ -40,7 +66,10 @@ export const CompLogin: React.FC<NavigationComponentProps> = ({
             увійти
           </CpText>
           <Formik
-            initialValues={{[field1]: '', [field2]: ''}}
+            initialValues={{
+              [field1]: 'alekseyideas@gmail.com',
+              [field2]: '24071989',
+            }}
             onSubmit={(values) => {
               if (!values[field1])
                 return Alert.alert(TEXT.titleError, TEXT.emailIsReq);
@@ -48,7 +77,13 @@ export const CompLogin: React.FC<NavigationComponentProps> = ({
                 return Alert.alert(TEXT.titleError, TEXT.passIsReq);
               if (!ValidateEmail(values[field1]))
                 return Alert.alert(TEXT.titleError, TEXT.emailIsWrong);
-              return console.log('values', values);
+              dispatch(
+                signInCompanyR({
+                  email: values[field1],
+                  password: values[field2],
+                }),
+              );
+              return console.log('Ok');
             }}>
             {({handleChange, handleBlur, handleSubmit, values}) => (
               <>

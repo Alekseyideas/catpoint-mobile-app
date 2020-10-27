@@ -1,10 +1,18 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import React from 'react';
 import {StyleSheet, View, SafeAreaView, ScrollView} from 'react-native';
 import {Logo} from '../components/Logo';
 import {CpText} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
+import {LOCAL_STORE} from '../utils/const';
 
 export const CompanyHome: React.FC = () => {
+  React.useEffect(() => {
+    (async () => {
+      const compId = await AsyncStorage.getItem(LOCAL_STORE.companyId);
+      console.log('CompanyHome:React.FC -> compId', compId);
+    })();
+  }, []);
   return (
     <MainWrapper>
       <SafeAreaView style={{flex: 1}}>
