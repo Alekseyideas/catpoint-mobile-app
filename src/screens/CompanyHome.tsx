@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import React from 'react';
-import {StyleSheet, View, SafeAreaView, ScrollView} from 'react-native';
+import {StyleSheet, View, SafeAreaView, ScrollView, Alert} from 'react-native';
 import {Logo} from '../components/Logo';
 import {CpText} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
@@ -8,10 +8,35 @@ import {LOCAL_STORE} from '../utils/const';
 
 export const CompanyHome: React.FC = () => {
   React.useEffect(() => {
+    const ws = new WebSocket('ws://localhost:8011');
+
+    ws.onopen = () => {
+      console.log(123123);
+      ws.send('hello'); // send a message
+    };
+    ws.onmessage = (e) => {
+      // a message was received
+      // Alert.alert(e.data);
+      console.log(111, e.data);
+    };
+
+    ws.onerror = (e) => {
+      // an error occurred
+      console.log(222, e.message);
+    };
+
+    ws.onclose = (e) => {
+      console.log(e.code, e.reason);
+    };
+    // setTimeout(() => {
+    //   ws.close();
+    // }, 5000);
+
     (async () => {
       const compId = await AsyncStorage.getItem(LOCAL_STORE.companyId);
       console.log('CompanyHome:React.FC -> compId', compId);
     })();
+    return () => ws.close();
   }, []);
   return (
     <MainWrapper>
