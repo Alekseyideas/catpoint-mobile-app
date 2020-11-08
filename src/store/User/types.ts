@@ -12,6 +12,14 @@ export interface TUser extends TSendUserData {
   token: string;
   refreshToken: string;
   updateAt: number;
+  __companies__: {
+    id: number;
+    userId: number;
+    companyId: number;
+    points: number;
+    createAt: string;
+    updateAt: string;
+  };
 }
 
 export interface TUserState {

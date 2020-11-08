@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
 import {StyleSheet, View, ActivityIndicator, Alert} from 'react-native';
-import jwtDecode from 'jwt-decode';
+// import jwtDecode from 'jwt-decode';
 import AsyncStorage from '@react-native-community/async-storage';
 import {MainWrapper} from '../hoc/MainWrapper';
 import {goToRoot} from '../utils/navigation';

@@ -1,5 +1,6 @@
 import React from 'react';
 import QRCode from 'react-native-qrcode-svg';
+import {useSelector} from 'react-redux';
 import {StyleSheet, View, SafeAreaView, ScrollView} from 'react-native';
 import {Logo} from '../components/Logo';
 import {CpText} from '../components/ui';
@@ -7,8 +8,12 @@ import {MainWrapper} from '../hoc/MainWrapper';
 import {LOGO_BASE_64} from '../utils/const';
 import {HistoryListItem} from '../components/HistoryListItem';
 import {UserInfo} from '../components/UserInfo';
+import {ApplicationState} from '../store/applicationState';
+import {Use} from 'react-native-svg';
 
 export const Home: React.FC = () => {
+  const {User} = useSelector((store: ApplicationState) => store);
+
   return (
     <MainWrapper>
       <SafeAreaView style={{flex: 1}}>
@@ -34,7 +39,7 @@ export const Home: React.FC = () => {
 
             <View style={{width: '90%', marginTop: 100}}>
               <View style={styles.lastVisitsWrapper}>
-                <UserInfo />
+                <UserInfo uri={User.data?.image || ''} />
                 <HistoryListItem
                   name="Тестова компанія"
                   currentPoints={9}
