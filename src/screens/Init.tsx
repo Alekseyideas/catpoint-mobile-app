@@ -4,7 +4,7 @@ import {StyleSheet, View, ActivityIndicator, Alert} from 'react-native';
 // import jwtDecode from 'jwt-decode';
 import AsyncStorage from '@react-native-community/async-storage';
 import {MainWrapper} from '../hoc/MainWrapper';
-import {goToRoot} from '../utils/navigation';
+import {goToRoot, setUserRoot} from '../utils/navigation';
 import {LOCAL_STORE, ROUTES} from '../utils/const';
 import {callApi} from '../utils/callApi';
 import {getUserR} from '../store/User/actions';
@@ -27,7 +27,7 @@ export const Init: React.FC = () => {
       } else {
         dispatch(
           getUserR(
-            () => goToRoot(ROUTES.home),
+            () => setUserRoot(ROUTES.home),
             () => goToRoot(ROUTES.welcome),
           ),
         );

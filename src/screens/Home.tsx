@@ -1,11 +1,12 @@
 import React from 'react';
 import QRCode from 'react-native-qrcode-svg';
+import {Navigation} from 'react-native-navigation';
 import {useSelector} from 'react-redux';
 import {StyleSheet, View, SafeAreaView, ScrollView} from 'react-native';
 import {Logo} from '../components/Logo';
 import {CpText} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
-import {LOGO_BASE_64} from '../utils/const';
+import {LOGO_BASE_64, ROUTES} from '../utils/const';
 import {HistoryListItem} from '../components/HistoryListItem';
 import {UserInfo} from '../components/UserInfo';
 import {ApplicationState} from '../store/applicationState';
@@ -68,9 +69,23 @@ export const Home: React.FC = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
+      <View style={styles.testBtn} />
     </MainWrapper>
   );
 };
+
+// Navigation.showOverlay({
+//   component: {
+//     id: 'Footer',
+//     name: ROUTES.footer,
+//     passProps: {},
+//     options: {
+//       overlay: {
+//         interceptTouchOutside: false,
+//       },
+//     },
+//   },
+// });
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -106,5 +121,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 20,
+  },
+
+  testBtn: {
+    width: 200,
+    height: 200,
+    backgroundColor: 'red',
+    position: 'absolute',
+    bottom: -20,
+    left: '50%',
+    zIndex: 999,
   },
 });

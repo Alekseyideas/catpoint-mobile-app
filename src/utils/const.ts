@@ -6,6 +6,7 @@ export const ROUTES = {
   home: createRouteName('Home'),
   companyHome: createRouteName('CompanyHome'),
   compLogin: createRouteName('CompLogin'),
+  footer: createRouteName('Footer'),
   registerCompany: createRouteName('RegisterCompany'),
 };
 
