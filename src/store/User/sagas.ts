@@ -10,6 +10,7 @@ function* handleCreateUser(action: ReturnType<typeof Action.signInR>) {
       route: '/user/sign-up',
       data: action.payload,
     });
+    // const data = action.payload;
     console.log('function*handleGetUser -> data', data);
     yield put(Action.signInS(data));
   } catch (e) {

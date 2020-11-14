@@ -9,7 +9,6 @@ import {LOGO_BASE_64} from '../utils/const';
 import {HistoryListItem} from '../components/HistoryListItem';
 import {UserInfo} from '../components/UserInfo';
 import {ApplicationState} from '../store/applicationState';
-import {Use} from 'react-native-svg';
 
 export const Home: React.FC = () => {
   const {User} = useSelector((store: ApplicationState) => store);
@@ -29,7 +28,7 @@ export const Home: React.FC = () => {
               <View style={styles.qrWrapper}>
                 <QRCode
                   size={180}
-                  value="Just some string value"
+                  value={`${User.data?.id}`}
                   logo={{uri: LOGO_BASE_64}}
                   logoSize={30}
                   logoBackgroundColor="black"
