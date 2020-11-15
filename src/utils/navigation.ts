@@ -63,59 +63,59 @@ export const setUserRoot = (name: string) =>
               },
             },
           },
-          {
-            component: {
-              name: ROUTES.home,
-              options: {
-                bottomTab: {
-                  ...defComp,
-                  icon: HomeIcon,
-                  text: 'iсторiя',
-                },
-              },
-            },
-          },
-          {
-            component: {
-              name: ROUTES.home,
-              options: {
-                bottomTab: {
-                  icon: BtnCatPoint,
-                  text: 'передбачення',
-                  iconInsets: {
-                    top: -45,
-                  },
-                },
-                overlay: {
-                  interceptTouchOutside: false,
-                },
-              },
-            },
-          },
-          {
-            component: {
-              name: ROUTES.home,
-              options: {
-                bottomTab: {
-                  ...defComp,
-                  icon: HomeIcon,
-                  text: 'акцii',
-                },
-              },
-            },
-          },
-          {
-            component: {
-              name: ROUTES.home,
-              options: {
-                bottomTab: {
-                  ...defComp,
-                  icon: HomeIcon,
-                  text: 'профiль',
-                },
-              },
-            },
-          },
+          // {
+          //   component: {
+          //     name: ROUTES.home,
+          //     options: {
+          //       bottomTab: {
+          //         ...defComp,
+          //         icon: HomeIcon,
+          //         text: 'iсторiя',
+          //       },
+          //     },
+          //   },
+          // },
+          // {
+          //   component: {
+          //     name: ROUTES.home,
+          //     options: {
+          //       bottomTab: {
+          //         icon: BtnCatPoint,
+          //         text: 'передбачення',
+          //         iconInsets: {
+          //           top: -45,
+          //         },
+          //       },
+          //       overlay: {
+          //         interceptTouchOutside: false,
+          //       },
+          //     },
+          //   },
+          // },
+          // {
+          //   component: {
+          //     name: ROUTES.home,
+          //     options: {
+          //       bottomTab: {
+          //         ...defComp,
+          //         icon: HomeIcon,
+          //         text: 'акцii',
+          //       },
+          //     },
+          //   },
+          // },
+          // {
+          //   component: {
+          //     name: ROUTES.home,
+          //     options: {
+          //       bottomTab: {
+          //         ...defComp,
+          //         icon: HomeIcon,
+          //         text: 'профiль',
+          //       },
+          //     },
+          //   },
+          // },
         ],
 
         options: {
