@@ -15,7 +15,7 @@ import {
 import {MainWrapper} from '../hoc/MainWrapper';
 import {ApplicationState} from '../store/applicationState';
 import {signUpCompanyR} from '../store/Company/actions';
-import {ROUTES} from '../utils/const';
+import {LOCAL_STORE, ROUTES} from '../utils/const';
 import {ValidateEmail} from '../utils/helpers';
 import {goTo} from '../utils/navigation';
 import {TEXT} from '../utils/text';
@@ -40,12 +40,18 @@ export const RegisterCompany: React.FC<NavigationComponentProps> = ({
   React.useEffect(() => {
     (async () => {
       if (Company.data) {
-        await AsyncStorage.setItem('token', Company.data?.token || '');
         await AsyncStorage.setItem(
-          'refreshToken',
+          LOCAL_STORE.token,
+          Company.data?.token || '',
+        );
+        await AsyncStorage.setItem(
+          LOCAL_STORE.refToken,
           Company.data?.refreshToken || '',
         );
-        await AsyncStorage.setItem('companyId', `${Company.data?.id || ''}`);
+        await AsyncStorage.setItem(
+          LOCAL_STORE.companyId,
+          `${Company.data?.id || ''}`,
+        );
         goTo({componentId, name: ROUTES.companyHome});
       }
     })();

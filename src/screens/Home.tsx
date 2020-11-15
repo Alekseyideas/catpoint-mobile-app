@@ -1,14 +1,45 @@
 import React from 'react';
 import QRCode from 'react-native-qrcode-svg';
+import {Navigation} from 'react-native-navigation';
+import {useSelector} from 'react-redux';
 import {StyleSheet, View, SafeAreaView, ScrollView} from 'react-native';
 import {Logo} from '../components/Logo';
 import {CpText} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
-import {LOGO_BASE_64} from '../utils/const';
+import {LOGO_BASE_64, ROUTES} from '../utils/const';
 import {HistoryListItem} from '../components/HistoryListItem';
 import {UserInfo} from '../components/UserInfo';
+import {ApplicationState} from '../store/applicationState';
 
 export const Home: React.FC = () => {
+  const {User} = useSelector((store: ApplicationState) => store);
+
+  React.useEffect(() => {
+    const ws = new WebSocket('ws://localhost:8011');
+
+    ws.onopen = () => {
+      console.log(123123);
+      ws.send('hello'); // send a message
+    };
+    ws.onmessage = (e) => {
+      // a message was received
+      // Alert.alert(e.data);
+      console.log(111, e.data);
+    };
+
+    ws.onerror = (e) => {
+      // an error occurred
+      console.log(222, e.message);
+    };
+
+    ws.onclose = (e) => {
+      console.log(e.code, e.reason);
+    };
+    // setTimeout(() => {
+    //   ws.close();
+    // }, 5000);
+    return () => ws.close();
+  }, []);
   return (
     <MainWrapper>
       <SafeAreaView style={{flex: 1}}>
@@ -24,7 +55,7 @@ export const Home: React.FC = () => {
               <View style={styles.qrWrapper}>
                 <QRCode
                   size={180}
-                  value="Just some string value"
+                  value={`${User.data?.id}`}
                   logo={{uri: LOGO_BASE_64}}
                   logoSize={30}
                   logoBackgroundColor="black"
@@ -34,7 +65,7 @@ export const Home: React.FC = () => {
 
             <View style={{width: '90%', marginTop: 100}}>
               <View style={styles.lastVisitsWrapper}>
-                <UserInfo />
+                <UserInfo uri={User.data?.image || ''} />
                 <HistoryListItem
                   name="Тестова компанія"
                   currentPoints={9}
@@ -67,6 +98,19 @@ export const Home: React.FC = () => {
     </MainWrapper>
   );
 };
+
+// Navigation.showOverlay({
+//   component: {
+//     id: 'Footer',
+//     name: ROUTES.footer,
+//     passProps: {},
+//     options: {
+//       overlay: {
+//         interceptTouchOutside: false,
+//       },
+//     },
+//   },
+// });
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -102,5 +146,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 20,
+  },
+
+  testBtn: {
+    width: 200,
+    height: 200,
+    backgroundColor: 'red',
+    position: 'absolute',
+    bottom: -20,
+    left: '50%',
+    zIndex: 999,
   },
 });

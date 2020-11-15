@@ -67,17 +67,6 @@ export const Login: React.FC<LoginProps> = ({componentId}) => {
           last_name: lastName,
           first_name: firstName,
         } = result;
-        // dispatch(
-        //   setUser({
-        //     id: null,
-        //     appId: id || '',
-        //     image: picture?.data.url || '',
-        //     lastName: lastName || '',
-        //     firstName: firstName || '',
-        //     email: email || '',
-        //   }),
-        // );
-        // await AsyncStorage.setItem('email', email || '');
         dispatch(
           signInR({
             appId: id || '',
@@ -87,7 +76,6 @@ export const Login: React.FC<LoginProps> = ({componentId}) => {
             email: email || '',
           }),
         );
-        // goTo({componentId, name: ROUTES.home});
       }
     }
   };
@@ -97,7 +85,8 @@ export const Login: React.FC<LoginProps> = ({componentId}) => {
     {
       parameters: {
         fields: {
-          string: 'email,name,first_name,middle_name,last_name,picture{url}',
+          string:
+            'id,email,name,first_name,middle_name,last_name,picture.type(large)',
         },
       },
     },
@@ -123,6 +112,7 @@ export const Login: React.FC<LoginProps> = ({componentId}) => {
                 if (result.isCancelled) {
                   console.log('Login cancelled');
                 } else {
+                  console.log(result);
                   new GraphRequestManager().addRequest(infoRequest).start();
                 }
               } catch (e) {

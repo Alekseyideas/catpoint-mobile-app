@@ -51,5 +51,10 @@ Navigation.registerComponent(ROUTES.companyHome, () => (props) => (
     <Screen.CompanyHome {...props} />
   </WithRedux>
 ));
+Navigation.registerComponent(ROUTES.footer, () => (props) => (
+  <WithRedux>
+    <Screen.CompanyHome {...props} />
+  </WithRedux>
+));
 
 Navigation.events().registerAppLaunchedListener(() => goToRoot(ROUTES.init));
