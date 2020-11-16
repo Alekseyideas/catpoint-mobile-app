@@ -4,9 +4,9 @@ export const ROUTES = {
   welcome: createRouteName('Welcome'),
   init: createRouteName('Init'),
   home: createRouteName('Home'),
+  history: createRouteName('History'),
   companyHome: createRouteName('CompanyHome'),
   compLogin: createRouteName('CompLogin'),
-  footer: createRouteName('Footer'),
   registerCompany: createRouteName('RegisterCompany'),
 };
 

@@ -1,6 +1,6 @@
 import {Navigation} from 'react-native-navigation';
 import HomeIcon from '../assets/images/home.png';
-import BtnCatPoint from '../assets/images/btnCatPoint.png';
+// import BtnCatPoint from '../assets/images/btnCatPoint.png';
 import {ROUTES} from './const';
 
 export const goTo = (data: {
@@ -63,18 +63,18 @@ export const setUserRoot = (name: string) =>
               },
             },
           },
-          // {
-          //   component: {
-          //     name: ROUTES.home,
-          //     options: {
-          //       bottomTab: {
-          //         ...defComp,
-          //         icon: HomeIcon,
-          //         text: 'iсторiя',
-          //       },
-          //     },
-          //   },
-          // },
+          {
+            component: {
+              name: ROUTES.history,
+              options: {
+                bottomTab: {
+                  ...defComp,
+                  icon: HomeIcon,
+                  text: 'iсторiя',
+                },
+              },
+            },
+          },
           // {
           //   component: {
           //     name: ROUTES.home,

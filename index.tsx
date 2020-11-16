@@ -6,55 +6,25 @@ import * as Screen from './src/screens';
 import {ROUTES} from './src/utils/const';
 import store from './src/store';
 import {goToRoot} from './src/utils/navigation';
+import {firstCharUpperCase} from './src/utils/helpers';
 
 const WithRedux: React.FC = ({children}) => (
   <Provider store={store}>{children}</Provider>
 );
 
-Navigation.registerComponent(ROUTES.compLogin, () => (props) => (
-  <WithRedux>
-    <Screen.CompLogin {...props} />
-  </WithRedux>
-));
-Navigation.registerComponent(ROUTES.registerCompany, () => (props) => (
-  <WithRedux>
-    <Screen.RegisterCompany {...props} />
-  </WithRedux>
-));
+Object.keys(ROUTES).forEach((route) => {
+  const scrName = firstCharUpperCase(route);
 
-Navigation.registerComponent(ROUTES.login, () => (props) => (
-  <WithRedux>
-    <Screen.Login {...props} />
-  </WithRedux>
-));
+  // remove typescript error
+  const Scr: any = Screen;
+  const AnyRoute: any = ROUTES;
 
-Navigation.registerComponent(ROUTES.welcome, () => (props) => (
-  <WithRedux>
-    <Screen.Welcome {...props} />
-  </WithRedux>
-));
-
-Navigation.registerComponent(ROUTES.init, () => (props) => (
-  <WithRedux>
-    <Screen.Init {...props} />
-  </WithRedux>
-));
-
-Navigation.registerComponent(ROUTES.home, () => (props) => (
-  <WithRedux>
-    <Screen.Home {...props} />
-  </WithRedux>
-));
-
-Navigation.registerComponent(ROUTES.companyHome, () => (props) => (
-  <WithRedux>
-    <Screen.CompanyHome {...props} />
-  </WithRedux>
-));
-Navigation.registerComponent(ROUTES.footer, () => (props) => (
-  <WithRedux>
-    <Screen.CompanyHome {...props} />
-  </WithRedux>
-));
+  const Comp = Scr[scrName];
+  Navigation.registerComponent(AnyRoute[route], () => (props) => (
+    <WithRedux>
+      <Comp {...props} />
+    </WithRedux>
+  ));
+});
 
 Navigation.events().registerAppLaunchedListener(() => goToRoot(ROUTES.init));
