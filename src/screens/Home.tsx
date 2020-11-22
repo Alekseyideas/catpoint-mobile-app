@@ -15,30 +15,27 @@ export const Home: React.FC = () => {
   const {User} = useSelector((store: ApplicationState) => store);
 
   React.useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8011');
-
-    ws.onopen = () => {
-      console.log(123123);
-      ws.send('hello'); // send a message
-    };
-    ws.onmessage = (e) => {
-      // a message was received
-      // Alert.alert(e.data);
-      console.log(111, e.data);
-    };
-
-    ws.onerror = (e) => {
-      // an error occurred
-      console.log(222, e.message);
-    };
-
-    ws.onclose = (e) => {
-      console.log(e.code, e.reason);
-    };
-    // setTimeout(() => {
-    //   ws.close();
-    // }, 5000);
-    return () => ws.close();
+    // const ws = new WebSocket('ws://localhost:8011');
+    // ws.onopen = () => {
+    //   console.log(123123);
+    //   ws.send('hello'); // send a message
+    // };
+    // ws.onmessage = (e) => {
+    //   // a message was received
+    //   // Alert.alert(e.data);
+    //   console.log(111, e.data);
+    // };
+    // ws.onerror = (e) => {
+    //   // an error occurred
+    //   console.log(222, e.message);
+    // };
+    // ws.onclose = (e) => {
+    //   console.log(e.code, e.reason);
+    // };
+    // // setTimeout(() => {
+    // //   ws.close();
+    // // }, 5000);
+    // return () => ws.close();
   }, []);
   return (
     <MainWrapper>

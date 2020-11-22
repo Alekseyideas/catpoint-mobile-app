@@ -6,3 +6,6 @@ export {History} from './History';
 export {CompanyHome} from './CompanyHome';
 export {CompLogin} from './CompLogin';
 export {RegisterCompany} from './RegisterCompany';
+export {Stock} from './Stock';
+export {Profile} from './Profile';
+export {Prediction} from './Prediction';

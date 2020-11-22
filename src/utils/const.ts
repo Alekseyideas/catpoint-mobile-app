@@ -5,9 +5,12 @@ export const ROUTES = {
   init: createRouteName('Init'),
   home: createRouteName('Home'),
   history: createRouteName('History'),
+  stock: createRouteName('Stock'),
   companyHome: createRouteName('CompanyHome'),
   compLogin: createRouteName('CompLogin'),
   registerCompany: createRouteName('RegisterCompany'),
+  profile: createRouteName('Profile'),
+  prediction: createRouteName('Prediction'),
 };
 
 export const COLORS = {

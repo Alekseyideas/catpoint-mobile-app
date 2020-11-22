@@ -3,11 +3,13 @@ import {View} from 'react-native';
 import {CpText} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
 
-export const History: React.FC = ({}) => {
+interface ProfileProps {}
+
+export const Profile: React.FC<ProfileProps> = ({}) => {
   return (
     <MainWrapper>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <CpText newStyles={{color: '#fff'}}>History</CpText>
+        <CpText newStyles={{color: '#fff'}}>Profile</CpText>
       </View>
     </MainWrapper>
   );

@@ -1,7 +1,6 @@
 import {Navigation} from 'react-native-navigation';
-import HomeIcon from '../assets/images/home.png';
-// import BtnCatPoint from '../assets/images/btnCatPoint.png';
-import {ROUTES} from './const';
+import * as MenuIcons from '../assets/images/menu';
+import {COLORS, ROUTES} from './const';
 
 export const goTo = (data: {
   name: string;
@@ -33,7 +32,7 @@ export const goToRoot = (name: string) =>
             visible: false,
           },
           bottomTab: {
-            icon: HomeIcon,
+            icon: MenuIcons.SrcIconHome,
           },
         },
       },
@@ -41,15 +40,20 @@ export const goToRoot = (name: string) =>
     },
   });
 const defComp = {
-  iconColor: '#75808C',
+  iconColor: '#BBBBBB',
+  textColor: '#BBBBBB',
   animateBadge: true,
+  selectedIconColor: COLORS.blue,
+  selectedTextColor: COLORS.blue,
+  iconInsets: {
+    top: 5,
+  },
 };
 export const setUserRoot = (name: string) =>
   Navigation.setRoot({
     root: {
       bottomTabs: {
         id: 'bottomTabsMain',
-        // stack: {
         children: [
           {
             component: {
@@ -57,7 +61,7 @@ export const setUserRoot = (name: string) =>
               options: {
                 bottomTab: {
                   ...defComp,
-                  icon: HomeIcon,
+                  icon: MenuIcons.SrcIconHome,
                   text: 'головна',
                 },
               },
@@ -69,64 +73,71 @@ export const setUserRoot = (name: string) =>
               options: {
                 bottomTab: {
                   ...defComp,
-                  icon: HomeIcon,
+                  icon: MenuIcons.SrcIconList,
                   text: 'iсторiя',
                 },
               },
             },
           },
-          // {
-          //   component: {
-          //     name: ROUTES.home,
-          //     options: {
-          //       bottomTab: {
-          //         icon: BtnCatPoint,
-          //         text: 'передбачення',
-          //         iconInsets: {
-          //           top: -45,
-          //         },
-          //       },
-          //       overlay: {
-          //         interceptTouchOutside: false,
-          //       },
-          //     },
-          //   },
-          // },
-          // {
-          //   component: {
-          //     name: ROUTES.home,
-          //     options: {
-          //       bottomTab: {
-          //         ...defComp,
-          //         icon: HomeIcon,
-          //         text: 'акцii',
-          //       },
-          //     },
-          //   },
-          // },
-          // {
-          //   component: {
-          //     name: ROUTES.home,
-          //     options: {
-          //       bottomTab: {
-          //         ...defComp,
-          //         icon: HomeIcon,
-          //         text: 'профiль',
-          //       },
-          //     },
-          //   },
-          // },
+          {
+            component: {
+              name: ROUTES.prediction,
+              options: {
+                bottomTab: {
+                  icon: MenuIcons.SrcBtnCatPoint,
+                  textColor: '#BBBBBB',
+                  text: 'передбачення',
+                  selectedTextColor: COLORS.blue,
+                  iconInsets: {
+                    top: -45,
+                  },
+                },
+                overlay: {
+                  interceptTouchOutside: false,
+                },
+              },
+            },
+          },
+          {
+            component: {
+              name: ROUTES.stock,
+              options: {
+                bottomTab: {
+                  ...defComp,
+                  icon: MenuIcons.SrcIconDiscount,
+                  text: 'акцii',
+                },
+              },
+            },
+          },
+          {
+            component: {
+              name: ROUTES.profile,
+              options: {
+                bottomTab: {
+                  ...defComp,
+                  icon: MenuIcons.SrcIconUser,
+                  text: 'профiль',
+                },
+              },
+            },
+          },
         ],
 
         options: {
           topBar: {
             visible: false,
           },
+          bottomTabs: {
+            drawBehind: true,
+            preferLargeIcons: true,
+            animate: true,
+            hideShadow: false,
+          },
           bottomTab: {
             iconColor: '#F2F2F2',
           },
         },
       },
-      // },
     },
   });
