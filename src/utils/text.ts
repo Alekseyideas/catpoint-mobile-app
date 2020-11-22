@@ -5,4 +5,5 @@ export const TEXT = {
   emailIsReq: 'Поле E-mail обов`язкове',
   emailIsWrong: 'Не вiрний формат E-mail',
   passIsReq: 'Поле Прароль обов`язкове',
+  scanAndGet: 'Скануй та отримуй поінти',
 };
