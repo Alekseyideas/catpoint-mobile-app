@@ -4,10 +4,13 @@ export const ROUTES = {
   welcome: createRouteName('Welcome'),
   init: createRouteName('Init'),
   home: createRouteName('Home'),
+  history: createRouteName('History'),
+  stock: createRouteName('Stock'),
   companyHome: createRouteName('CompanyHome'),
   compLogin: createRouteName('CompLogin'),
-  footer: createRouteName('Footer'),
   registerCompany: createRouteName('RegisterCompany'),
+  profile: createRouteName('Profile'),
+  prediction: createRouteName('Prediction'),
 };
 
 export const COLORS = {

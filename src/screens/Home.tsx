@@ -10,35 +10,34 @@ import {LOGO_BASE_64, ROUTES} from '../utils/const';
 import {HistoryListItem} from '../components/HistoryListItem';
 import {UserInfo} from '../components/UserInfo';
 import {ApplicationState} from '../store/applicationState';
+import {globalStyles} from '../utils/globalStyles';
+import {TEXT} from '../utils/text';
 
 export const Home: React.FC = () => {
   const {User} = useSelector((store: ApplicationState) => store);
 
   React.useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8011');
-
-    ws.onopen = () => {
-      console.log(123123);
-      ws.send('hello'); // send a message
-    };
-    ws.onmessage = (e) => {
-      // a message was received
-      // Alert.alert(e.data);
-      console.log(111, e.data);
-    };
-
-    ws.onerror = (e) => {
-      // an error occurred
-      console.log(222, e.message);
-    };
-
-    ws.onclose = (e) => {
-      console.log(e.code, e.reason);
-    };
-    // setTimeout(() => {
-    //   ws.close();
-    // }, 5000);
-    return () => ws.close();
+    // const ws = new WebSocket('ws://localhost:8011');
+    // ws.onopen = () => {
+    //   console.log(123123);
+    //   ws.send('hello'); // send a message
+    // };
+    // ws.onmessage = (e) => {
+    //   // a message was received
+    //   // Alert.alert(e.data);
+    //   console.log(111, e.data);
+    // };
+    // ws.onerror = (e) => {
+    //   // an error occurred
+    //   console.log(222, e.message);
+    // };
+    // ws.onclose = (e) => {
+    //   console.log(e.code, e.reason);
+    // };
+    // // setTimeout(() => {
+    // //   ws.close();
+    // // }, 5000);
+    // return () => ws.close();
   }, []);
   return (
     <MainWrapper>
@@ -47,9 +46,9 @@ export const Home: React.FC = () => {
           <View style={styles.wrapper}>
             <View style={{alignItems: 'center'}}>
               <Logo />
-              <View style={styles.scanTextWrapper}>
-                <CpText newStyles={styles.scanText}>
-                  Скануй та отримуй поінти
+              <View style={globalStyles.scanTextWrapper}>
+                <CpText newStyles={globalStyles.text18W}>
+                  {TEXT.scanAndGet}
                 </CpText>
               </View>
               <View style={styles.qrWrapper}>
