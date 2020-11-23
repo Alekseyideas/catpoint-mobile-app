@@ -9,3 +9,4 @@ export {RegisterCompany} from './RegisterCompany';
 export {Stock} from './Stock';
 export {Profile} from './Profile';
 export {Prediction} from './Prediction';
+export {HistoryPop} from './HistoryPop';

@@ -11,6 +11,7 @@ export const ROUTES = {
   registerCompany: createRouteName('RegisterCompany'),
   profile: createRouteName('Profile'),
   prediction: createRouteName('Prediction'),
+  historyPop: createRouteName('HistoryPop'),
 };
 
 export const COLORS = {

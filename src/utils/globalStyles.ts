@@ -21,6 +21,6 @@ export const globalStyles = StyleSheet.create({
     marginTop: 40,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    minHeight: '100%',
+    minHeight: '70%',
   },
 });

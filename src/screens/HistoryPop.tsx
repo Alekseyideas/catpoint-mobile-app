@@ -7,14 +7,13 @@ import {MainWrapper} from '../hoc/MainWrapper';
 import {globalStyles} from '../utils/globalStyles';
 import {compDidApear} from '../utils/navigationListenner';
 
-export const History: React.FC<NavigationComponentProps> = ({componentId}) => {
+export const HistoryPop: React.FC<NavigationComponentProps> = ({
+  componentId,
+}) => {
   const [dataEx, setEx] = React.useState<{text: string; key: string}[]>([]);
   React.useEffect(() => {
     const navListenner = compDidApear(componentId, () => {
       console.log(2, 'History');
-      Navigation.mergeOptions(componentId, {
-        topBar: {visible: false},
-      });
       const data: {text: string; key: string}[] = [];
       for (let i = 0; i < 30; i += 1) {
         data.push({text: `Example shop name ${i}`, key: String(i)});
@@ -30,7 +29,6 @@ export const History: React.FC<NavigationComponentProps> = ({componentId}) => {
     <MainWrapper>
       <SafeAreaView style={{flex: 1}}>
         <View style={globalStyles.topWrapper}>
-          <LogoText />
           <View style={[globalStyles.whiteWrapper]}>
             <FlatList
               data={dataEx}

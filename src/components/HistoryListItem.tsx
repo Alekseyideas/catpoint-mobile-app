@@ -22,7 +22,9 @@ export const HistoryListItem: React.FC<HistoryListItemProps> = ({
         {borderBottomColor: disabelBorder ? '#fff' : 'rgba(0, 0, 0, 0.2)'},
       ]}>
       <View style={styles.nameWrapper}>
-        <CpText newStyles={{color: 'rgba(0, 0, 0, 0.6)'}}>{name}</CpText>
+        <CpText newStyles={{color: 'rgba(0, 0, 0, 0.6)', fontSize: 12}}>
+          {name}
+        </CpText>
       </View>
       <View style={styles.progressWrapper}>
         <View style={styles.pointTextWrapper}>
@@ -58,11 +60,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   nameWrapper: {
-    width: '49%',
+    width: '45%',
   },
   progressWrapper: {
     paddingBottom: 3,
-    width: '49%',
+    width: '54%',
   },
   progress: {
     width: '100%',

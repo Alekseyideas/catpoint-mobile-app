@@ -1,8 +1,15 @@
 import React from 'react';
 import QRCode from 'react-native-qrcode-svg';
-import {Navigation} from 'react-native-navigation';
+import {NavigationComponentProps} from 'react-native-navigation';
 import {useSelector} from 'react-redux';
-import {StyleSheet, View, SafeAreaView, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {Logo} from '../components/Logo';
 import {CpText} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
@@ -12,11 +19,18 @@ import {UserInfo} from '../components/UserInfo';
 import {ApplicationState} from '../store/applicationState';
 import {globalStyles} from '../utils/globalStyles';
 import {TEXT} from '../utils/text';
+import {compDidApear} from '../utils/navigationListenner';
+import MenuIcon from '../assets/images/menuIcon.png';
+import {goTo} from '../utils/navigation';
 
-export const Home: React.FC = () => {
+export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
   const {User} = useSelector((store: ApplicationState) => store);
 
   React.useEffect(() => {
+    const navListenner = compDidApear(componentId, () =>
+      console.log(1, 'Home'),
+    );
+    return navListenner.remove();
     // const ws = new WebSocket('ws://localhost:8011');
     // ws.onopen = () => {
     //   console.log(123123);
@@ -38,14 +52,14 @@ export const Home: React.FC = () => {
     // //   ws.close();
     // // }, 5000);
     // return () => ws.close();
-  }, []);
+  }, [componentId]);
   return (
     <MainWrapper>
       <SafeAreaView style={{flex: 1}}>
         <ScrollView style={{height: '100%', flex: 1}}>
           <View style={styles.wrapper}>
             <View style={{alignItems: 'center'}}>
-              <Logo />
+              <Logo imageStyle={{width: 80, height: 65}} />
               <View style={globalStyles.scanTextWrapper}>
                 <CpText newStyles={globalStyles.text18W}>
                   {TEXT.scanAndGet}
@@ -64,7 +78,10 @@ export const Home: React.FC = () => {
 
             <View style={{width: '90%', marginTop: 100}}>
               <View style={styles.lastVisitsWrapper}>
-                <UserInfo uri={User.data?.image || ''} />
+                <UserInfo
+                  uri={User.data?.image || ''}
+                  name={`${User.data?.firstName} ${User.data?.lastName}`}
+                />
                 <HistoryListItem
                   name="Тестова компанія"
                   currentPoints={9}
@@ -86,9 +103,20 @@ export const Home: React.FC = () => {
                   totalPoints={10}
                   disabelBorder
                 />
-                {/* <CpText newStyles={styles.scanText}>
-                Скануй та отримуй поінти
-              </CpText> */}
+                <View style={{alignItems: 'center'}}>
+                  <TouchableOpacity
+                    style={{marginTop: 10}}
+                    onPress={() => {
+                      goTo({componentId, name: ROUTES.historyPop});
+                    }}>
+                    <Image
+                      style={{width: 20, height: 15}}
+                      width={20}
+                      height={15}
+                      source={MenuIcon}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>

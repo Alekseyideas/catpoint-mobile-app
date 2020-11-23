@@ -11,6 +11,11 @@ export const goTo = (data: {
   return Navigation.push(componentId, {
     component: {
       name,
+      options: {
+        topBar: {
+          visible: false,
+        },
+      },
     },
   });
 };
@@ -56,74 +61,118 @@ export const setUserRoot = (name: string) =>
         id: 'bottomTabsMain',
         children: [
           {
-            component: {
-              name: ROUTES.home,
-              options: {
-                bottomTab: {
-                  ...defComp,
-                  icon: MenuIcons.SrcIconHome,
-                  text: 'головна',
-                },
-              },
-            },
-          },
-          {
-            component: {
-              name: ROUTES.history,
-              options: {
-                bottomTab: {
-                  ...defComp,
-                  icon: MenuIcons.SrcIconList,
-                  text: 'iсторiя',
-                },
-              },
-            },
-          },
-          {
-            component: {
-              name: ROUTES.prediction,
-              options: {
-                bottomTab: {
-                  icon: MenuIcons.SrcBtnCatPoint,
-                  textColor: '#BBBBBB',
-                  text: 'передбачення',
-                  selectedTextColor: COLORS.blue,
-                  iconInsets: {
-                    top: -45,
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: ROUTES.home,
+                    options: {
+                      topBar: {
+                        visible: false,
+                      },
+                      bottomTab: {
+                        ...defComp,
+                        icon: MenuIcons.SrcIconHome,
+                        text: 'головна',
+                      },
+                    },
                   },
                 },
-                overlay: {
-                  interceptTouchOutside: false,
-                },
-              },
+              ],
             },
           },
           {
-            component: {
-              name: ROUTES.stock,
-              options: {
-                bottomTab: {
-                  ...defComp,
-                  icon: MenuIcons.SrcIconDiscount,
-                  text: 'акцii',
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: ROUTES.history,
+                    options: {
+                      topBar: {
+                        visible: false,
+                      },
+                      bottomTab: {
+                        ...defComp,
+                        icon: MenuIcons.SrcIconList,
+                        text: 'iсторiя',
+                      },
+                    },
+                  },
                 },
-              },
+              ],
             },
           },
           {
-            component: {
-              name: ROUTES.profile,
-              options: {
-                bottomTab: {
-                  ...defComp,
-                  icon: MenuIcons.SrcIconUser,
-                  text: 'профiль',
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: ROUTES.prediction,
+                    options: {
+                      topBar: {
+                        visible: false,
+                      },
+                      bottomTab: {
+                        icon: MenuIcons.SrcBtnCatPoint,
+                        textColor: '#BBBBBB',
+                        text: 'передбачення',
+                        selectedTextColor: COLORS.blue,
+                        iconInsets: {
+                          top: -45,
+                        },
+                      },
+                      overlay: {
+                        interceptTouchOutside: false,
+                      },
+                    },
+                  },
                 },
-              },
+              ],
+            },
+          },
+          {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: ROUTES.stock,
+                    options: {
+                      topBar: {
+                        visible: false,
+                      },
+                      bottomTab: {
+                        ...defComp,
+                        icon: MenuIcons.SrcIconDiscount,
+                        text: 'акцii',
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          },
+          {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: ROUTES.profile,
+                    options: {
+                      topBar: {
+                        visible: false,
+                      },
+                      bottomTab: {
+                        ...defComp,
+                        icon: MenuIcons.SrcIconUser,
+                        text: 'профiль',
+                      },
+                    },
+                  },
+                },
+              ],
             },
           },
         ],
-
         options: {
           topBar: {
             visible: false,
