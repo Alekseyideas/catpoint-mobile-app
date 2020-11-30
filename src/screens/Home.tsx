@@ -1,5 +1,6 @@
 import React from 'react';
 import QRCode from 'react-native-qrcode-svg';
+import AsyncStorage from '@react-native-community/async-storage';
 import {NavigationComponentProps} from 'react-native-navigation';
 import {useSelector} from 'react-redux';
 import {
@@ -19,40 +20,34 @@ import {UserInfo} from '../components/UserInfo';
 import {ApplicationState} from '../store/applicationState';
 import {globalStyles} from '../utils/globalStyles';
 import {TEXT} from '../utils/text';
-import {compDidApear} from '../utils/navigationListenner';
 import MenuIcon from '../assets/images/menuIcon.png';
 import {goTo} from '../utils/navigation';
+import {useSocket} from '../hooks/useSocket';
 
 export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
   const {User} = useSelector((store: ApplicationState) => store);
+  const {ws, userId} = useSocket('ws://localhost:8011');
 
   React.useEffect(() => {
-    const navListenner = compDidApear(componentId, () =>
-      console.log(1, 'Home'),
-    );
-    return navListenner.remove();
-    // const ws = new WebSocket('ws://localhost:8011');
-    // ws.onopen = () => {
-    //   console.log(123123);
-    //   ws.send('hello'); // send a message
-    // };
-    // ws.onmessage = (e) => {
-    //   // a message was received
-    //   // Alert.alert(e.data);
-    //   console.log(111, e.data);
-    // };
-    // ws.onerror = (e) => {
-    //   // an error occurred
-    //   console.log(222, e.message);
-    // };
-    // ws.onclose = (e) => {
-    //   console.log(e.code, e.reason);
-    // };
-    // // setTimeout(() => {
-    // //   ws.close();
-    // // }, 5000);
-    // return () => ws.close();
-  }, [componentId]);
+    console.log(123);
+  }, []);
+  React.useEffect(() => {
+    if (userId) {
+      AsyncStorage.getItem('token').then((token) => {
+        ws.current.send(
+          JSON.stringify({
+            type: 'getCompanies',
+            data: {
+              token,
+              userId,
+            },
+          }),
+        );
+      });
+    }
+    // eslint-disable-next-line
+  }, [userId]);
+
   return (
     <MainWrapper>
       <SafeAreaView style={{flex: 1}}>
