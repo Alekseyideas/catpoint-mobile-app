@@ -1,8 +1,9 @@
+/* eslint no-underscore-dangle: ["error", { "allow": ["__company__"] }]*/
 import React from 'react';
 import QRCode from 'react-native-qrcode-svg';
 import AsyncStorage from '@react-native-community/async-storage';
 import {NavigationComponentProps} from 'react-native-navigation';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   StyleSheet,
   View,
@@ -22,31 +23,131 @@ import {globalStyles} from '../utils/globalStyles';
 import {TEXT} from '../utils/text';
 import MenuIcon from '../assets/images/menuIcon.png';
 import {goTo} from '../utils/navigation';
+// import {useSocket} from '../hooks/useSocket';
+import {
+  setUserCompanies,
+  updateUserCompanies,
+  TCompPoint,
+} from '../store/Companies/actions';
+import {TCompaniesState, TUserCompany} from '../store/Companies/types';
 import {useSocket} from '../hooks/useSocket';
 
+// interface TCompPoint extends TUserCompany {
+//   isComplite?: boolean;
+// }
+// const addPointHandler = (
+//   com: TCompaniesState['data'],
+//   comPoint: TCompPoint,
+// ): TUserCompany[] => {
+//   console.log(com, 'com');
+//   const compData = [...com];
+//   const index = compData.findIndex((obj) => obj.id === comPoint.id);
+//   /* eslint no-param-reassign: ["error", { "props": false }] */
+//   delete comPoint.isComplite;
+//   console.log(comPoint, 'comPoint data');
+//   if (index || index === 0) {
+//     compData[index] = {...comPoint};
+//   } else {
+//     compData.push(comPoint);
+//   }
+
+//   console.log(compData, 'compData');
+//   return compData;
+// };
+
 export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
-  const {User} = useSelector((store: ApplicationState) => store);
-  const {ws, userId} = useSocket('ws://localhost:8011');
+  const {User, Companies, Token} = useSelector(
+    (store: ApplicationState) => store,
+  );
+  const ws = React.useRef<WebSocket | any>(null);
+  const dispatch = useDispatch();
+
+  const openConnection = () => {
+    ws.current.onopen = () => {
+      ws.current.send(
+        JSON.stringify({
+          type: 'getUserCompanies',
+          data: {
+            token: `bearer ${Token.data}`,
+          },
+        }),
+      );
+      ws.current.send(
+        JSON.stringify({
+          type: 'getKey',
+          data: {
+            token: `bearer ${Token.data}`,
+          },
+        }),
+      );
+    };
+  };
+
+  const handlerMess = () => {
+    ws.current.onmessage = async (e) => {
+      const resp: {
+        type: 'getKey' | 'getCompanies' | 'getUserCompanies' | 'addPoint';
+        data: any | null;
+      } = JSON.parse(e.data);
+
+      switch (resp.type) {
+        case 'getKey':
+          console.log(resp.data, 'resp.data');
+          // setUserId(resp.data?.clientId || '');
+          break;
+        case 'addPoint':
+          console.log(resp.data, 'resp.data addPoint');
+
+          dispatch(updateUserCompanies({comp: resp.data}));
+          break;
+        case 'getUserCompanies':
+          dispatch(setUserCompanies({companies: resp.data as TUserCompany[]}));
+          break;
+        default:
+          break;
+      }
+      // getComp(userId);
+    };
+  };
+
+  const handleError = () => {
+    ws.current.onerror = (e) => {
+      // an error occurred
+      console.log(222, e.message);
+    };
+  };
+  const handleClose = () => {
+    ws.current.onclose = (e) => {
+      console.log(e.code, e.reason);
+    };
+  };
 
   React.useEffect(() => {
-    console.log(123);
+    ws.current = new WebSocket('ws://localhost:8011');
+    openConnection();
+    handleError();
+    handlerMess();
+    handleClose();
+    return () => ws.current.close();
   }, []);
-  React.useEffect(() => {
-    if (userId) {
-      AsyncStorage.getItem('token').then((token) => {
-        ws.current.send(
-          JSON.stringify({
-            type: 'getCompanies',
-            data: {
-              token,
-              userId,
-            },
-          }),
-        );
-      });
-    }
-    // eslint-disable-next-line
-  }, [userId]);
+
+  // React.useEffect(() => {
+  //   if (userId) {
+  //     console.log();
+  //     AsyncStorage.getItem('token').then((token) => {
+  //       ws.current.send(
+  //         JSON.stringify({
+  //           type: 'getCompanies',
+  //           data: {
+  //             token,
+  //             userId,
+  //           },
+  //         }),
+  //       );
+  //     });
+  //   }
+  //   // eslint-disable-next-line
+  // }, [userId]);
 
   return (
     <MainWrapper>
@@ -77,27 +178,19 @@ export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
                   uri={User.data?.image || ''}
                   name={`${User.data?.firstName} ${User.data?.lastName}`}
                 />
-                <HistoryListItem
-                  name="Тестова компанія"
-                  currentPoints={9}
-                  totalPoints={10}
-                />
-                <HistoryListItem
-                  name="Тестова компанія 2"
-                  currentPoints={2}
-                  totalPoints={5}
-                />
-                <HistoryListItem
-                  name="Тестова компанія 3"
-                  currentPoints={7}
-                  totalPoints={10}
-                />
-                <HistoryListItem
-                  name="Тестова компанія 4"
-                  currentPoints={4}
-                  totalPoints={10}
-                  disabelBorder
-                />
+                {Companies.data &&
+                  Companies.data[0] &&
+                  Companies.data.map((comp) => {
+                    return (
+                      <HistoryListItem
+                        key={comp.id}
+                        name={comp.__company__.name}
+                        currentPoints={comp.points}
+                        totalPoints={comp.__company__.totalPoints}
+                      />
+                    );
+                  })}
+
                 <View style={{alignItems: 'center'}}>
                   <TouchableOpacity
                     style={{marginTop: 10}}

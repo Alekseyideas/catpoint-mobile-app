@@ -10,5 +10,12 @@ export const getCompaniesS = (payload: {companies: TUserCompany[]}) =>
 export const getCompaniesE = (message: string) =>
   action(ActionTypes.GET_COMPANIES_E, message);
 
-export const setUserCompany = (payload: {company: TUserCompany}) =>
+export const setUserCompanies = (payload: {companies: TUserCompany[]}) =>
   action(ActionTypes.SET_COMPANIES_S, payload);
+
+export interface TCompPoint extends TUserCompany {
+  isComplite?: boolean;
+}
+
+export const updateUserCompanies = (payload: {comp: TCompPoint}) =>
+  action(ActionTypes.UPDATE_COMPANIES, payload);

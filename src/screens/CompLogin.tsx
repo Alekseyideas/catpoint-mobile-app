@@ -14,6 +14,7 @@ import {LOCAL_STORE, ROUTES} from '../utils/const';
 
 import {ApplicationState} from '../store/applicationState';
 import {signInCompanyR} from '../store/Company/actions';
+import {setToken} from '../store/Token/actions';
 
 interface CompLoginProps {
   t?: string;
@@ -42,10 +43,11 @@ export const CompLogin: React.FC<NavigationComponentProps> = ({
           LOCAL_STORE.companyId,
           `${Company.data?.id || ''}`,
         );
+        dispatch(setToken(Company.data?.token || ''));
         goTo({componentId, name: ROUTES.companyHome});
       }
     })();
-  }, [Company.data, componentId]);
+  }, [Company.data, componentId, dispatch]);
   return (
     <MainWrapper>
       <View style={stylesComp.wrapper}>

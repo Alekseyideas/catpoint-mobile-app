@@ -13,10 +13,11 @@ import {Logo} from '../components/Logo';
 import {CpText, FaceBookBtn, InstagramBtn} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
 import {goTo} from '../utils/navigation';
-import {ROUTES} from '../utils/const';
+import {LOCAL_STORE, ROUTES} from '../utils/const';
 import {TEXT} from '../utils/text';
 import {signInR} from '../store/User/actions';
 import {ApplicationState} from '../store/applicationState';
+import {setToken} from '../store/Token/actions';
 
 interface LoginProps extends NavigationComponentProps {
   num?: string;
@@ -28,16 +29,21 @@ export const Login: React.FC<LoginProps> = ({componentId}) => {
   React.useEffect(() => {
     if (User.data) {
       (async () => {
-        await AsyncStorage.setItem('token', User.data?.token || '');
+        await AsyncStorage.setItem(LOCAL_STORE.token, User.data?.token || '');
         await AsyncStorage.setItem(
-          'refreshToken',
+          LOCAL_STORE.refToken,
+          // 'refreshToken',
           User.data?.refreshToken || '',
         );
-        await AsyncStorage.setItem('userId', `${User.data?.id || ''}`);
+        await AsyncStorage.setItem(
+          LOCAL_STORE.userId,
+          `${User.data?.id || ''}`,
+        );
+        dispatch(setToken(User.data?.token || ''));
         goTo({componentId, name: ROUTES.home});
       })();
     }
-  }, [User.data, componentId]);
+  }, [User.data, componentId, dispatch]);
   const responseInfoCallback = async (
     error: object | undefined,
     result:

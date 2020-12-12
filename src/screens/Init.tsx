@@ -9,6 +9,7 @@ import {LOCAL_STORE, ROUTES} from '../utils/const';
 import {callApi} from '../utils/callApi';
 import {getUserR} from '../store/User/actions';
 import {getCompanyR} from '../store/Company/actions';
+import {setToken} from '../store/Token/actions';
 // import {useFbLogin} from '../hooks/useFbLogin';
 // import {COLORS} from '../utils/const';
 // AsyncStorage.clear();
@@ -50,7 +51,7 @@ export const Init: React.FC = () => {
           data?.isCompany ? LOCAL_STORE.companyId : LOCAL_STORE.userId,
           `${data.id}` || '',
         );
-
+        dispatch(setToken(data.token || ''));
         getRequestLogic(data.isCompany);
       } else {
         goToRoot(ROUTES.welcome);

@@ -1,7 +1,13 @@
 import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {ApplicationState} from '../store/applicationState';
+import {setUserCompanies} from '../store/Companies/actions';
+import {TUserCompany} from '../store/Companies/types';
 
 export const useSocket = (uri: string) => {
-  const ws = React.useRef<WebSocket | null>(null);
+  const {Token} = useSelector((store: ApplicationState) => store);
+  const dispatch = useDispatch();
+  const ws = React.useRef<WebSocket | any>(null);
   // new WebSocket(uri)
   const [userId, setUserId] = React.useState('');
 
@@ -9,23 +15,39 @@ export const useSocket = (uri: string) => {
     ws.current.onopen = () => {
       ws.current.send(
         JSON.stringify({
-          type: 'getKey',
-          data: null,
+          type: 'getUserCompanies',
+          data: {
+            token: `bearer ${Token.data}`,
+          },
         }),
-      ); // send a message
+      );
+      ws.current.send(
+        JSON.stringify({
+          type: 'getKey',
+          data: {
+            token: `bearer ${Token.data}`,
+          },
+        }),
+      );
     };
   };
 
   const handlerMess = () => {
     ws.current.onmessage = async (e) => {
       const resp: {
-        type: 'getKey' | 'getCompanies';
-        data: {clientId: string} | null;
+        type: 'getKey' | 'getCompanies' | 'getUserCompanies' | 'addPoint';
+        data: any | null;
       } = JSON.parse(e.data);
 
       switch (resp.type) {
         case 'getKey':
+          console.log(JSON.stringify(resp.data), 'resp.data');
           setUserId(resp.data?.clientId || '');
+          break;
+        case 'addPoint':
+        case 'getUserCompanies':
+          console.log(JSON.stringify(resp), 'resp');
+          dispatch(setUserCompanies({companies: resp.data as TUserCompany[]}));
           break;
         default:
           break;
@@ -42,7 +64,7 @@ export const useSocket = (uri: string) => {
   };
   const handleClose = () => {
     ws.current.onclose = (e) => {
-      console.log(e.code, e.reason);
+      console.log(e.code, e);
     };
   };
 

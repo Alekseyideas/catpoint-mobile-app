@@ -15,6 +15,7 @@ import {
 import {MainWrapper} from '../hoc/MainWrapper';
 import {ApplicationState} from '../store/applicationState';
 import {signUpCompanyR} from '../store/Company/actions';
+import {setToken} from '../store/Token/actions';
 import {LOCAL_STORE, ROUTES} from '../utils/const';
 import {ValidateEmail} from '../utils/helpers';
 import {goTo} from '../utils/navigation';
@@ -52,10 +53,11 @@ export const RegisterCompany: React.FC<NavigationComponentProps> = ({
           LOCAL_STORE.companyId,
           `${Company.data?.id || ''}`,
         );
+        dispatch(setToken(Company.data?.token || ''));
         goTo({componentId, name: ROUTES.companyHome});
       }
     })();
-  }, [Company.data, componentId]);
+  }, [Company.data, componentId, dispatch]);
   return (
     <MainWrapper>
       <ScrollView style={{paddingTop: 40, flex: 1}}>

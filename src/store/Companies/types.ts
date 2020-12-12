@@ -1,7 +1,16 @@
 export interface TUserCompany {
   id: number;
-  image: string | null;
-  name: string;
+  createAt: string;
+  updateAt: string;
+  userId: number;
+  companyId: number;
+  visits: number;
+  points: number;
+  finishedCount: number;
+  __company__: {
+    name: string;
+    totalPoints: number;
+  };
 }
 
 export interface TCompaniesState {
@@ -18,6 +27,8 @@ export enum ActionTypes {
   SET_COMPANIES_R = '@@companies/SET_COMPANIES_R',
   SET_COMPANIES_S = '@@companies/SET_COMPANIES_S',
   SET_COMPANIES_E = '@@companies/SET_COMPANIES_E',
+
+  UPDATE_COMPANIES = '@@companies/UPDATE_COMPANIES',
 
   COMPANIES_CLEAN_UP = '@@companies/COMPANIES_CLEAN_UP',
 }
