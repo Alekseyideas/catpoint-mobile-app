@@ -1,4 +1,5 @@
 import React from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   ImageBackground,
   SafeAreaView,
@@ -17,6 +18,8 @@ import {ApplicationState} from '../store/applicationState';
 import {TUser} from '../store/User/types';
 import {globalStyles} from '../utils/globalStyles';
 import {TEXT} from '../utils/text';
+import {goToRoot} from '../utils/navigation';
+import {ROUTES} from '../utils/const';
 
 const WrapperProfileLinks: React.FC = () => {
   const linkData = [
@@ -49,6 +52,14 @@ const WrapperProfileLinks: React.FC = () => {
       title: 'Про CatPoint',
       id: 6,
       onPress: () => console.log('test'),
+    },
+    {
+      title: 'Вийти',
+      id: 7,
+      onPress: async () => {
+        await AsyncStorage.clear();
+        goToRoot(ROUTES.welcome);
+      },
     },
   ];
   return (

@@ -1,7 +1,6 @@
-/* eslint no-underscore-dangle: ["error", { "allow": ["__company__"] }]*/
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import QRCode from 'react-native-qrcode-svg';
-import AsyncStorage from '@react-native-community/async-storage';
 import {NavigationComponentProps} from 'react-native-navigation';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -23,42 +22,18 @@ import {globalStyles} from '../utils/globalStyles';
 import {TEXT} from '../utils/text';
 import MenuIcon from '../assets/images/menuIcon.png';
 import {goTo} from '../utils/navigation';
-// import {useSocket} from '../hooks/useSocket';
 import {
   setUserCompanies,
   updateUserCompanies,
-  TCompPoint,
 } from '../store/Companies/actions';
-import {TCompaniesState, TUserCompany} from '../store/Companies/types';
-import {useSocket} from '../hooks/useSocket';
-
-// interface TCompPoint extends TUserCompany {
-//   isComplite?: boolean;
-// }
-// const addPointHandler = (
-//   com: TCompaniesState['data'],
-//   comPoint: TCompPoint,
-// ): TUserCompany[] => {
-//   console.log(com, 'com');
-//   const compData = [...com];
-//   const index = compData.findIndex((obj) => obj.id === comPoint.id);
-//   /* eslint no-param-reassign: ["error", { "props": false }] */
-//   delete comPoint.isComplite;
-//   console.log(comPoint, 'comPoint data');
-//   if (index || index === 0) {
-//     compData[index] = {...comPoint};
-//   } else {
-//     compData.push(comPoint);
-//   }
-
-//   console.log(compData, 'compData');
-//   return compData;
-// };
+import {TUserCompany} from '../store/Companies/types';
 
 export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
   const {User, Companies, Token} = useSelector(
     (store: ApplicationState) => store,
   );
+  const [clientId, setClientId] = React.useState('');
+
   const ws = React.useRef<WebSocket | any>(null);
   const dispatch = useDispatch();
 
@@ -84,7 +59,7 @@ export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
   };
 
   const handlerMess = () => {
-    ws.current.onmessage = async (e) => {
+    ws.current.onmessage = async (e: any) => {
       const resp: {
         type: 'getKey' | 'getCompanies' | 'getUserCompanies' | 'addPoint';
         data: any | null;
@@ -92,12 +67,9 @@ export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
 
       switch (resp.type) {
         case 'getKey':
-          console.log(resp.data, 'resp.data');
-          // setUserId(resp.data?.clientId || '');
+          setClientId(resp.data?.clientId);
           break;
         case 'addPoint':
-          console.log(resp.data, 'resp.data addPoint');
-
           dispatch(updateUserCompanies({comp: resp.data}));
           break;
         case 'getUserCompanies':
@@ -111,13 +83,12 @@ export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
   };
 
   const handleError = () => {
-    ws.current.onerror = (e) => {
-      // an error occurred
+    ws.current.onerror = (e: any) => {
       console.log(222, e.message);
     };
   };
   const handleClose = () => {
-    ws.current.onclose = (e) => {
+    ws.current.onclose = (e: any) => {
       console.log(e.code, e.reason);
     };
   };
@@ -129,25 +100,8 @@ export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
     handlerMess();
     handleClose();
     return () => ws.current.close();
+    // eslint-disable-next-line
   }, []);
-
-  // React.useEffect(() => {
-  //   if (userId) {
-  //     console.log();
-  //     AsyncStorage.getItem('token').then((token) => {
-  //       ws.current.send(
-  //         JSON.stringify({
-  //           type: 'getCompanies',
-  //           data: {
-  //             token,
-  //             userId,
-  //           },
-  //         }),
-  //       );
-  //     });
-  //   }
-  //   // eslint-disable-next-line
-  // }, [userId]);
 
   return (
     <MainWrapper>
@@ -162,13 +116,15 @@ export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
                 </CpText>
               </View>
               <View style={styles.qrWrapper}>
-                <QRCode
-                  size={180}
-                  value={`${User.data?.id}`}
-                  logo={{uri: LOGO_BASE_64}}
-                  logoSize={30}
-                  logoBackgroundColor="black"
-                />
+                {clientId ? (
+                  <QRCode
+                    size={180}
+                    value={JSON.stringify({id: User.data?.id, clientId})}
+                    logo={{uri: LOGO_BASE_64}}
+                    logoSize={30}
+                    logoBackgroundColor="black"
+                  />
+                ) : null}
               </View>
             </View>
 

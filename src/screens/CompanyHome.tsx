@@ -1,6 +1,14 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import React from 'react';
-import {StyleSheet, View, SafeAreaView, ScrollView, Alert} from 'react-native';
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import {RNCamera} from 'react-native-camera';
+import {
+  StyleSheet,
+  View,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {Logo} from '../components/Logo';
 import {CpText} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
@@ -38,6 +46,9 @@ export const CompanyHome: React.FC = () => {
   //   })();
   //   return () => ws.close();
   // }, []);
+  const onSuccess = (e: any) => {
+    console.error('An error occured', e);
+  };
   return (
     <MainWrapper>
       <SafeAreaView style={{flex: 1}}>
@@ -46,7 +57,20 @@ export const CompanyHome: React.FC = () => {
             <View style={{alignItems: 'center'}}>
               <Logo />
               <View style={styles.scanTextWrapper}>
-                <CpText newStyles={styles.scanText}>Comp</CpText>
+                {/* <CpText newStyles={styles.scanText}>Comp</CpText> */}
+
+                <QRCodeScanner
+                  onRead={onSuccess}
+                  // flashMode={RNCamera.Constants.FlashMode.torch}
+                  topContent={
+                    <CpText>Go to your computer and scan the QR code.</CpText>
+                  }
+                  bottomContent={
+                    <TouchableOpacity>
+                      <CpText>OK. Got it!</CpText>
+                    </TouchableOpacity>
+                  }
+                />
               </View>
             </View>
           </View>

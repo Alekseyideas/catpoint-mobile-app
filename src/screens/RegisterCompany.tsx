@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import {Formik} from 'formik';
 import React from 'react';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Alert, ScrollView, StyleSheet, View} from 'react-native';
 import {NavigationComponentProps} from 'react-native-navigation';
 import {useDispatch, useSelector} from 'react-redux';
@@ -60,7 +61,7 @@ export const RegisterCompany: React.FC<NavigationComponentProps> = ({
   }, [Company.data, componentId, dispatch]);
   return (
     <MainWrapper>
-      <ScrollView style={{paddingTop: 40, flex: 1}}>
+      <KeyboardAwareScrollView style={{paddingTop: 40, flex: 1}}>
         <View style={[stylesComp.wrapper, {paddingBottom: 100}]}>
           <Logo imageStyle={{width: 110, height: 90}} />
           <View
@@ -203,7 +204,7 @@ export const RegisterCompany: React.FC<NavigationComponentProps> = ({
             </Formik>
           </View>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </MainWrapper>
   );
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import {NavigationComponentProps} from 'react-native-navigation';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -50,78 +51,80 @@ export const CompLogin: React.FC<NavigationComponentProps> = ({
   }, [Company.data, componentId, dispatch]);
   return (
     <MainWrapper>
-      <View style={stylesComp.wrapper}>
-        <Logo imageStyle={{width: 110, height: 90}} />
-        <View style={stylesComp.scanTextWrapper}>
-          <CpText newStyles={stylesComp.scanText}>
-            Ви обрали споціб входу як компанія
-          </CpText>
+      <KeyboardAwareScrollView>
+        <View style={stylesComp.wrapper}>
+          <Logo imageStyle={{width: 110, height: 90}} />
+          <View style={stylesComp.scanTextWrapper}>
+            <CpText newStyles={stylesComp.scanText}>
+              Ви обрали споціб входу як компанія
+            </CpText>
+          </View>
+          <View style={stylesComp.inputWrapper}>
+            <CpText
+              newStyles={{
+                textTransform: 'uppercase',
+                textAlign: 'center',
+                fontWeight: '600',
+                color: 'black',
+              }}>
+              увійти
+            </CpText>
+            <Formik
+              initialValues={{
+                [field1]: 'alekseyideas@gmail.com',
+                [field2]: '24071989',
+              }}
+              onSubmit={(values) => {
+                if (!values[field1])
+                  return Alert.alert(TEXT.titleError, TEXT.emailIsReq);
+                if (!values[field2])
+                  return Alert.alert(TEXT.titleError, TEXT.passIsReq);
+                if (!ValidateEmail(values[field1]))
+                  return Alert.alert(TEXT.titleError, TEXT.emailIsWrong);
+                dispatch(
+                  signInCompanyR({
+                    email: values[field1],
+                    password: values[field2],
+                  }),
+                );
+                return console.log('Ok');
+              }}>
+              {({handleChange, handleBlur, handleSubmit, values}) => (
+                <>
+                  <View style={stylesComp.wrapperInput}>
+                    <CpInput
+                      onChange={handleChange(field1)}
+                      onBlur={handleBlur(field1)}
+                      value={values[field1]}
+                      placeholder="E-mail"
+                    />
+                  </View>
+                  <View style={stylesComp.wrapperInput}>
+                    <CpInput
+                      onChange={handleChange(field2)}
+                      onBlur={handleBlur(field2)}
+                      value={values[field2]}
+                      placeholder="Password"
+                      isPass
+                      onSubmitEditing={handleSubmit}
+                    />
+                  </View>
+                  <View style={{marginTop: 50}}>
+                    <CpButtonGreen onPress={handleSubmit} title="УВIЙТИ" />
+                  </View>
+                </>
+              )}
+            </Formik>
+          </View>
+          <View style={stylesComp.btnRegWrapper}>
+            <CpButton
+              onPress={() => goTo({componentId, name: ROUTES.registerCompany})}
+              title="зареєструватись"
+              textStyle={{textTransform: 'uppercase'}}
+            />
+          </View>
         </View>
-        <View style={stylesComp.inputWrapper}>
-          <CpText
-            newStyles={{
-              textTransform: 'uppercase',
-              textAlign: 'center',
-              fontWeight: '600',
-              color: 'black',
-            }}>
-            увійти
-          </CpText>
-          <Formik
-            initialValues={{
-              [field1]: 'alekseyideas@gmail.com',
-              [field2]: '24071989',
-            }}
-            onSubmit={(values) => {
-              if (!values[field1])
-                return Alert.alert(TEXT.titleError, TEXT.emailIsReq);
-              if (!values[field2])
-                return Alert.alert(TEXT.titleError, TEXT.passIsReq);
-              if (!ValidateEmail(values[field1]))
-                return Alert.alert(TEXT.titleError, TEXT.emailIsWrong);
-              dispatch(
-                signInCompanyR({
-                  email: values[field1],
-                  password: values[field2],
-                }),
-              );
-              return console.log('Ok');
-            }}>
-            {({handleChange, handleBlur, handleSubmit, values}) => (
-              <>
-                <View style={stylesComp.wrapperInput}>
-                  <CpInput
-                    onChange={handleChange(field1)}
-                    onBlur={handleBlur(field1)}
-                    value={values[field1]}
-                    placeholder="E-mail"
-                  />
-                </View>
-                <View style={stylesComp.wrapperInput}>
-                  <CpInput
-                    onChange={handleChange(field2)}
-                    onBlur={handleBlur(field2)}
-                    value={values[field2]}
-                    placeholder="Password"
-                    isPass
-                    onSubmitEditing={handleSubmit}
-                  />
-                </View>
-                <View style={{marginTop: 50}}>
-                  <CpButtonGreen onPress={handleSubmit} title="УВIЙТИ" />
-                </View>
-              </>
-            )}
-          </Formik>
-        </View>
-        <View style={stylesComp.btnRegWrapper}>
-          <CpButton
-            onPress={() => goTo({componentId, name: ROUTES.registerCompany})}
-            title="зареєструватись"
-            textStyle={{textTransform: 'uppercase'}}
-          />
-        </View>
-      </View>
+      </KeyboardAwareScrollView>
     </MainWrapper>
   );
 };
