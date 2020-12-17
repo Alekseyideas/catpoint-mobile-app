@@ -12,18 +12,20 @@ import {View, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import {Logo} from '../components/Logo';
 import {CpText, FaceBookBtn, InstagramBtn} from '../components/ui';
 import {MainWrapper} from '../hoc/MainWrapper';
-import {goTo} from '../utils/navigation';
+import {goTo, setUserRoot} from '../utils/navigation';
 import {LOCAL_STORE, ROUTES} from '../utils/const';
 import {TEXT} from '../utils/text';
 import {signInR} from '../store/User/actions';
 import {ApplicationState} from '../store/applicationState';
 import {setToken} from '../store/Token/actions';
+import {Loader} from '../components/Loader';
 
 interface LoginProps extends NavigationComponentProps {
   num?: string;
 }
 export const Login: React.FC<LoginProps> = ({componentId}) => {
   const {User} = useSelector((store: ApplicationState) => store);
+  const [isLoading, setIsLoading] = React.useState(false);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -40,7 +42,8 @@ export const Login: React.FC<LoginProps> = ({componentId}) => {
           `${User.data?.id || ''}`,
         );
         dispatch(setToken(User.data?.token || ''));
-        goTo({componentId, name: ROUTES.home});
+        setUserRoot(ROUTES.home);
+        // goTo({componentId, name: ROUTES.home});
       })();
     }
   }, [User.data, componentId, dispatch]);
@@ -84,6 +87,7 @@ export const Login: React.FC<LoginProps> = ({componentId}) => {
         );
       }
     }
+    setIsLoading(false);
   };
 
   const infoRequest = new GraphRequest(
@@ -101,15 +105,17 @@ export const Login: React.FC<LoginProps> = ({componentId}) => {
 
   return (
     <MainWrapper>
+      {isLoading ? <Loader /> : null}
       <View style={styles.wrapper}>
         <Logo imageStyle={styles.logo} />
         <View style={styles.btnsWrapper}>
           <CpText newStyles={styles.titleBlock}>почати збирати поінти</CpText>
-          <View style={{marginBottom: 20}}>
+          {/* <View style={{marginBottom: 20}}>
             <InstagramBtn onPress={LoginManager.logOut} />
-          </View>
+          </View> */}
           <FaceBookBtn
             onPress={async (): Promise<boolean> => {
+              setIsLoading(true);
               try {
                 const result = await LoginManager.logInWithPermissions([
                   'public_profile',
@@ -117,12 +123,14 @@ export const Login: React.FC<LoginProps> = ({componentId}) => {
                 ]);
                 if (result.isCancelled) {
                   console.log('Login cancelled');
+                  setIsLoading(false);
                 } else {
                   console.log(result);
                   new GraphRequestManager().addRequest(infoRequest).start();
                 }
               } catch (e) {
                 console.log('Login fail with error: ', e);
+                setIsLoading(false);
               }
               return true;
             }}

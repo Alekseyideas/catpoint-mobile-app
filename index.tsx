@@ -14,7 +14,6 @@ const WithRedux: React.FC = ({children}) => (
 
 Object.keys(ROUTES).forEach((route) => {
   const scrName = firstCharUpperCase(route);
-
   // remove typescript error
   const Scr: any = Screen;
   const AnyRoute: any = ROUTES;

@@ -46,7 +46,7 @@ function* handleSignIn(action: ReturnType<typeof Action.signInCompanyR>) {
   } catch (e) {
     console.log('function*handleGetUser -> e', e);
 
-    Alert.alert(TEXT.titleError, TEXT.tryAgainLater);
+    Alert.alert(TEXT.titleError, JSON.stringify(e));
     yield put(Action.signInCompanyE(e));
   }
 }

@@ -12,6 +12,8 @@ export const ROUTES = {
   profile: createRouteName('Profile'),
   prediction: createRouteName('Prediction'),
   historyPop: createRouteName('HistoryPop'),
+  successQrScan: createRouteName('SuccessQrScan'),
+  freeCoffee: createRouteName('FreeCoffee'),
 };
 
 export const COLORS = {

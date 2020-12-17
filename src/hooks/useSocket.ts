@@ -4,7 +4,7 @@ import {ApplicationState} from '../store/applicationState';
 import {setUserCompanies} from '../store/Companies/actions';
 import {TUserCompany} from '../store/Companies/types';
 
-export const useSocket = (uri: string) => {
+export const useSocket = (soket: WebSocket) => {
   const {Token} = useSelector((store: ApplicationState) => store);
   const dispatch = useDispatch();
   const ws = React.useRef<WebSocket | any>(null);
@@ -69,13 +69,14 @@ export const useSocket = (uri: string) => {
   };
 
   React.useEffect(() => {
-    ws.current = new WebSocket(uri);
+    ws.current = soket;
     openConnection();
     handleError();
     handlerMess();
     handleClose();
     return () => ws.current.close();
-  }, []);
+  }, [soket]);
+
   return {
     ws,
     setUserId,

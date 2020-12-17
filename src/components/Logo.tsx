@@ -4,9 +4,10 @@ import LogoSrc from '../assets/images/logo.png';
 
 interface LogoProps {
   imageStyle?: StyleProp<ImageStyle>;
+  src?: string;
 }
-export const Logo: React.FC<LogoProps> = ({imageStyle}) => {
-  return <Image source={LogoSrc} style={[styles.image, imageStyle]} />;
+export const Logo: React.FC<LogoProps> = ({imageStyle, src = LogoSrc}) => {
+  return <Image source={src} style={[styles.image, imageStyle]} />;
 };
 
 const styles = StyleSheet.create({

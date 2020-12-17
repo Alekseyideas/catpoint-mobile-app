@@ -1,13 +1,15 @@
 import React from 'react';
 import {ImageBackground, StyleSheet, View} from 'react-native';
+import {Logo} from './Logo';
 import {CpText} from './ui';
 
 interface UserInfoProps {
   uri: string;
   name: string;
+  totalCups: number;
 }
 
-export const UserInfo: React.FC<UserInfoProps> = ({uri, name}) => {
+export const UserInfo: React.FC<UserInfoProps> = ({uri, name, totalCups}) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.outerAvatar}>
@@ -24,7 +26,9 @@ export const UserInfo: React.FC<UserInfoProps> = ({uri, name}) => {
           {name}
         </CpText>
         <View style={styles.cupWrapper}>
-          <View style={styles.cupImg} />
+          <View style={styles.cupImg}>
+            <Logo imageStyle={{width: 34, height: 25}} />
+          </View>
           <View>
             <CpText
               newStyles={{fontSize: 11, color: '#000', fontWeight: '600'}}>
@@ -33,7 +37,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({uri, name}) => {
             <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
               <CpText
                 newStyles={{fontSize: 35, color: '#000', fontWeight: '700'}}>
-                49
+                {totalCups}
               </CpText>
               <CpText
                 newStyles={{
@@ -71,7 +75,9 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 150,
     marginRight: 10,
-    backgroundColor: '#0449c9',
+    backgroundColor: '#4F8EB6',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   outerAvatar: {
     width: imgWidth,

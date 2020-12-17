@@ -1,7 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
 import QRCode from 'react-native-qrcode-svg';
-import {NavigationComponentProps} from 'react-native-navigation';
+import {
+  Navigation,
+  NavigationComponentProps,
+  OptionsBottomTabs,
+} from 'react-native-navigation';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   StyleSheet,
@@ -10,6 +14,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  AppState,
+  AppStateStatus,
 } from 'react-native';
 import {Logo} from '../components/Logo';
 import {CpText} from '../components/ui';
@@ -21,19 +27,22 @@ import {ApplicationState} from '../store/applicationState';
 import {globalStyles} from '../utils/globalStyles';
 import {TEXT} from '../utils/text';
 import MenuIcon from '../assets/images/menuIcon.png';
-import {goTo} from '../utils/navigation';
+import {goTo, rootOp} from '../utils/navigation';
 import {
   setUserCompanies,
   updateUserCompanies,
 } from '../store/Companies/actions';
 import {TUserCompany} from '../store/Companies/types';
+import {compDidApear} from '../utils/navigationListenner';
+import {useSocket} from '../hooks/useSocket';
 
 export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
+  const [appState, setAppState] = React.useState(AppState.currentState);
+
   const {User, Companies, Token} = useSelector(
     (store: ApplicationState) => store,
   );
   const [clientId, setClientId] = React.useState('');
-
   const ws = React.useRef<WebSocket | any>(null);
   const dispatch = useDispatch();
 
@@ -70,6 +79,24 @@ export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
           setClientId(resp.data?.clientId);
           break;
         case 'addPoint':
+          if (resp.data.isComplite) {
+            Navigation.showModal({
+              stack: {
+                children: [
+                  {
+                    component: {
+                      name: ROUTES.freeCoffee,
+                      options: {
+                        topBar: {
+                          visible: false,
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            });
+          }
           dispatch(updateUserCompanies({comp: resp.data}));
           break;
         case 'getUserCompanies':
@@ -93,8 +120,31 @@ export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
     };
   };
 
+  const handleAppState = React.useCallback(
+    (nextAppState: AppStateStatus) => {
+      if (appState.match(/background/) && nextAppState === 'active') {
+        ws.current = new WebSocket('ws://3.16.152.215/ws');
+        openConnection();
+        handleError();
+        handlerMess();
+        handleClose();
+      }
+      setAppState(nextAppState);
+    },
+    // eslint-disable-next-line
+    [appState],
+  );
+
   React.useEffect(() => {
-    ws.current = new WebSocket('ws://localhost:8011');
+    AppState.addEventListener('change', handleAppState);
+
+    return () => AppState.removeEventListener('change', handleAppState);
+  }, [handleAppState]);
+
+  // Navigation.events().registerComponentListener(componentId, () => console.log(313123));
+
+  React.useEffect(() => {
+    ws.current = new WebSocket('ws://3.16.152.215/ws');
     openConnection();
     handleError();
     handlerMess();
@@ -103,6 +153,14 @@ export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
     // eslint-disable-next-line
   }, []);
 
+  const getTotalCups = () => {
+    if (Companies.data && Companies.data[0]) {
+      return Companies.data.reduce((i, {visits}) => {
+        return i + visits;
+      }, 0);
+    }
+    return 0;
+  };
   return (
     <MainWrapper>
       <SafeAreaView style={{flex: 1}}>
@@ -131,6 +189,7 @@ export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
             <View style={{width: '90%', marginTop: 100}}>
               <View style={styles.lastVisitsWrapper}>
                 <UserInfo
+                  totalCups={getTotalCups()}
                   uri={User.data?.image || ''}
                   name={`${User.data?.firstName} ${User.data?.lastName}`}
                 />
@@ -147,7 +206,7 @@ export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
                     );
                   })}
 
-                <View style={{alignItems: 'center'}}>
+                {/* <View style={{alignItems: 'center'}}>
                   <TouchableOpacity
                     style={{marginTop: 10}}
                     onPress={() => {
@@ -160,7 +219,7 @@ export const Home: React.FC<NavigationComponentProps> = ({componentId}) => {
                       source={MenuIcon}
                     />
                   </TouchableOpacity>
-                </View>
+                </View> */}
               </View>
             </View>
           </View>

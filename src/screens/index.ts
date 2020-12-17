@@ -10,3 +10,5 @@ export {Stock} from './Stock';
 export {Profile} from './Profile';
 export {Prediction} from './Prediction';
 export {HistoryPop} from './HistoryPop';
+export {SuccessQrScan} from './SuccessQrScan';
+export {FreeCoffee} from './FreeCoffee';
